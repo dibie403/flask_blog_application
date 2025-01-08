@@ -1,0 +1,136 @@
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.bg-steel {
+  background-color:#5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+.media {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.media:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.article-metadata {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85em;
+  color: #888;
+}
+
+.article-metadata a {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.article-metadata a:hover {
+  text-decoration: underline;
+}
+
+.article-title {
+  font-size: 1.3em;
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.article-title:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.article-content {
+  color: #555;
+  line-height: 1.5;
+  font-size: 0.95em;
+  margin-top: 10px;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+.card{
+  color: #333;
+  background-color: #5f788a;
+  margin:25px;
+}
+.group a:hover{
+  color: red;
+  text-decoration: none
+}
+
+/* Style for the list group items */
+.list-group-item {
+  background-color: #f8f9fa; /* Default background color */
+  color: #333; /* Text color */
+  padding: 10px 15px;
+  border: 1px solid #ddd; /* Border around each item */
+  text-decoration: none; /* Remove underline from links */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+
+.list-group-item a {
+  text-decoration: none;
+  color: inherit; /* Use the same color as the list item */
+}
+
+/* Hover effect */
+.list-group-item:hover {
+  background-color: #007bff; /* Change background color on hover */
+  color: white; /* Change text color on hover */
+}
+
+.list-group-item:hover a {
+  color: white; /* Make sure link text also changes color on hover */
+}

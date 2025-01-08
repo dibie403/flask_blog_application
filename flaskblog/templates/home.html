@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="home-page-section p-1">
+  
+    <!-- Header Section -->
+    <div class="header text-center mb-4">
+        {% if current_user.is_authenticated %}
+        <h2 class="text-primary" style="text-align: left; margin-left: 20px;">
+            TOP SCRIBERS
+        </h2>
+
+        <div class="image-section11 d-flex flex-wrap align-items-center mb-3 ml-4" style="gap: 25px;">
+    {% for user in user %}
+        <div class="text-center" style="max-width: 80px;">
+            <a href="{{url_for('look',username=user.username)}}"><img class="rounded-circle border border-primary" 
+                 src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" 
+                 alt="{{ user.username }}" 
+                 width="60" height="60" ></a>
+            <a href="{{url_for('look',username=user.username)}}"><p class="mt-2 text-truncate" style="font-size: 0.9em; color: #428bca "title="{{ user.username }}">
+                {{ user.username[:7] }}
+            </p></a>
+        </div>
+    {% endfor %}
+</div>
+        <h2 class="text-primary">
+            See What's Being Scribed 😯!
+        </h2>
+        {% else %}
+        <h2 class="text-secondary font-weight-bold">
+            Get Scribed In And See What's Trending 😯!
+        </h2>
+        {% endif %}
+    </div>
+    
+
+    <!-- Posts Section -->
+    <div class="posts-list">
+        {% for post in post.items %}
+
+        <article class="media content-section p-3 mb-4 rounded shadow-sm bg-white">
+            <img class="rounded-circle article-img mr-3" 
+                 src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" 
+                 alt="{{ post.author.username }}" 
+                 width="60" height="60">
+            <div class="media-body">
+                <!-- Metadata -->
+                <div class="article-metadata d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('look', username=post.author.username) }}" 
+                       class="text-primary">
+                        ⭐⭐{{ post.author.username }} 
+                    </a>
+                    <small class="text-muted">
+                        {{ post.date.strftime('%Y-%m-%d') }}
+                    </small>
+                </div>
+
+                <!-- Post Title -->
+                <h2 class="mt-2">
+                    <a class="article-title" 
+                       href="{{ url_for('post_detail', title=post.title) }}">
+                        {{ post.title }}
+                    </a>
+                </h2>
+
+                <!-- Post Content -->
+                <p class="article-content mt-2 text-justify text-secondary">
+                    {{ post.content[:150] }}...
+                    <a href="{{ url_for('post_detail', title=post.title) }}" 
+                       class="text-primary font-italic">
+                        Read More
+                    </a>
+                </p>
+           <div class="article-metadata">
+              <!-- Show the "Like" icon if the user has not liked the post -->
+              <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                     <img src="{{ url_for('static', filename='images/thumb-up.png') }}" alt="Like" style="width: 15px; height: 15px;">
+                </a><a style="color: #428bca">{{ post.likes | length }}
+
+             
+          
+              <!-- Pin Link -->
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                    Pin 🎯 1k
+                </a>
+
+                <!-- Comment Section -->
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                    Comment
+                </a>
+                <img src="{{ url_for('static', filename='images/talk.png') }}" alt="Comment" style="width: 15px; height: 15px;">
+                <a style="color: #428bca;">
+                    {{ post.comments.count() }}
+                </a>
+
+          </div>
+              
+        </article>
+        
+        {% else %}
+        <!-- No Posts Message -->
+        <div class="text-center text-muted">
+            <h5>No posts yet. Start scribing and sharing your thoughts!</h5>
+        </div>
+        {% endfor %}
+        {% for page_num in post.iter_pages() %}
+          {% if page_num %}
+            {% if post.page == page_num %}
+              <a class="btn btn-info mb-4" href="{{url_for('home',page=page_num)}}">{{page_num}}</a>
+            {% else %}
+             <a class="btn btn-outline-info mb-4" href="{{url_for('home',page=page_num)}}">{{page_num}}</a>
+            {% endif %}
+          {% else %}
+           ...
+          {% endif %}
+          
+          
+        {% endfor %}
+    </div>
+  
+</div>
+{% endblock content %}

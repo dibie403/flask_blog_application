@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Input Fields */
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            padding: 12px 20px;
+            width: 100%;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(to right, #5d0ebb, #1c6fdd);
+        }
+
+        /* Login Link */
+        .login-link {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .login-link a {
+            color: #6a11cb;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .login-link a:hover {
+            color: #2575fc;
+        }
+
+        /* Additional Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+
+        .container.shake {
+            animation: shake 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="form-container">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <legend>JOIN TODAY</legend>
+
+            <label for="username">{{ form.username.label }}</label>
+            {% if form.username.errors %}
+	         {{ form.username(class="form-control form-control-lg is-invalid") }}
+	         <div class="invalid-feedback">
+	         	{% for error in form.username.errors %}
+	         	<span> {{ error }}</span>
+	         	{% endfor %}
+	         </div>
+	        {% else %}
+	           {{ form.username(size=32) }} <!-- Input uses form-control only -->
+	        {% endif %}
+
+            <label for="email">Email</label>
+	        {% if form.email.errors %}
+	         {{ form.email(class="form-control form-control-lg is-invalid") }}
+	         <div class="invalid-feedback">
+	         	{% for error in form.email.errors%}
+	         	<span> {{ error }}</span>
+	         	{% endfor %}
+	         </div>
+	        {% else %}
+	           {{ form.email(class="form-control form-control-lg") }} <!-- Input uses form-control only -->
+	        {% endif %}
+
+            <label for="password">Password</label>
+		        {% if form.password.errors %}
+		        {{ form.password(class="form-control form-control-lg is invalid") }}
+			        <div class='invalid-feedback'>
+				       {% for error in form.password.errors%}
+				         <span>{{ error }}</span>
+				       {% endfor %}
+			        </div>
+			    {% else%}
+		           {{ form.password(class="form-control form-control-lg") }}
+		        {% endif %}
+
+            <label for="confirm_password">Confirm Password</label>
+            {% if form.confirm_password.errors %}
+	         {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+		        <div class="invalid-feedback">
+		           {% for error in form.confirm_password.errors %}
+		        	 <span>{{ error }}</span>
+		           {% endfor %}
+		        </div>
+		    {% else %}
+		      {{ form.confirm_password(class="form-control form-control-lg") }}
+	        {% endif %}  
+        </fieldset>
+
+        <div>
+            {{ form.submit(class="submit-btn") }}
+        </div>
+    </form>
+
+    <div class="login-link">
+        Already have an account? <a href="{{ url_for('login') }}">Sign in</a>
+    </div>
+</div>
+
+</body>
+</html>

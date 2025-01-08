@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+      <h2 class="text-secondary"><a>My Profile</a></h2>
+      <div class="media">
+        <a href="{{ url_for('show_img',image_file=image_file) }}">
+        <img class="rounded-circle account-img" src="{{ image_file }}" alt="Profile Picture">
+        </a>
+
+        <div class="media-body">
+          <h6 class="account-heading">{{ current_user.username }}⭐⭐⭐</h6>
+          <p class="text-secondary">☯️{{ current_user.email }}</p>
+          <p class="text-secondary">online 🦖</p>
+       <h4>{{current_user.Biography}}</h4> 
+       <div class="border-top pt-3">
+        <small class="text-secondary">
+          <a class="ml-2" href="{{ url_for('edit') }}">Edit profile</a>
+        </small>
+        <small class="text-secondary">
+          <a class="ml-2" href="{{ url_for('new_post') }}">Create Post</a>
+        </small>
+       </div>
+        </div>
+      </div>  
+    </div>
+    <div class="content-section">
+      <h2 class="text-center  text-secondary"><a>My Timeline</a></h2><br>
+      <div class="border-top pt-3">
+        {% for post in post.items %}
+         <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/'+ post.author.image_file)}}">
+          <div class="media-body">
+            <div class="article-metadata ">
+              <h9 style = "color: #428bca">{{ post.author.username }}<h9>
+              <small style = "color: grey" class=ml-4>{{ post.date.strftime('%Y- %m- %d')}}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('post_detail', title=post.title) }}">{{ post.title }}</a></h2>
+            <!-- Post Content -->
+                <p class="article-content mt-2 text-justify text-secondary">
+                    {{ post.content[:150] }}...
+                    <a href="{{ url_for('post_detail', title=post.title) }}" 
+                       class="text-primary font-italic">
+                        Read More
+                    </a>
+                </p>
+
+          <div class="article-metadata">
+              <!-- Show the "Like" icon if the user has not liked the post -->
+              <form action="{{ url_for('post_detail', title=post.title) }}" method="POST" style="display: inline-block;">
+                  <button type="submit" style="border: none; background: none; cursor: pointer; color: #428bca">Like
+                      <img src="{{ url_for('static', filename='images/thumb-up.png') }}" alt="Like" style="width: 15px; height: 15px;">
+                  </button><a style="color: #428bca">{{ post.likes | length }}</a>
+                  
+              </form>
+          
+              <!-- Pin Link -->
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                    Pin 🎯 1k
+                </a>
+
+                <!-- Comment Section -->
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                    Comment
+                </a>
+                <img src="{{ url_for('static', filename='images/talk.png') }}" alt="Comment" style="width: 15px; height: 15px;">
+                <a style="color: #428bca;">
+                    {{ post.comments.count() }}
+                </a>
+
+          </div>
+              
+          </div>
+        </article>
+      {% endfor %}
+      {% for page_num in post.iter_pages() %}
+          {% if page_num %}
+            {% if post.page == page_num %}
+              <a class="btn btn-info mb-4" href="{{url_for('Account',page=page_num)}}">{{page_num}}</a>
+            {% else %}
+             <a class="btn btn-outline-info mb-4" href="{{url_for('Account',page=page_num)}}">{{page_num}}</a>
+            {% endif %}
+          {% else %}
+           ...
+          {% endif %}
+          
+          
+        {% endfor %}
+      </div>
+
+    </div>
+
+{% endblock content %}

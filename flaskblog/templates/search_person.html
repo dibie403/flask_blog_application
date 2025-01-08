@@ -1,0 +1,59 @@
+
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+      <h2 class="text-secondary"><a>PROFILE</a></h2>
+      <div class="media">
+        <a href="{{ url_for('show_img2',picture=picture) }}">
+          <img class="rounded-circle account-img" src="{{ picture }}" alt="Profile Picture">
+        </a>
+
+        <div class="media-body">
+          <h6 class="account-heading">{{ name.upper() }}⭐</h6>
+          <p class="text-secondary">☯️{{ user.email }}</p>
+          <p class="text-secondary">offline 🐨</p>
+       <h4>Write a short biography about yourself'</h4> 
+       <div class="border-top pt-3">
+        <small class="text-secondary">
+          <a class="ml-2" href="#">Connect</a>
+        </small>
+        <small class="text-secondary">
+          <a class="ml-2" href="#">POP User</a>
+        </small>
+       </div>
+        </div>
+      </div>  
+    </div>
+    <div class="content-section">
+      <h2 class="text-center  text-secondary"><a>Timeline</a></h2><br>
+      <div class="border-top pt-3">
+        {% for post in posts %}
+         <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ picture }}">
+          <div class="media-body">
+            <div class="article-metadata ">
+              <h9 style = "color: #428bca">{{ name }}</h9>
+              <small style = "color: grey" class=ml-4>{{ post.date.strftime('%Y- %m- %d')}}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('post_detail', title=post.title) }}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+        </article>
+      {% endfor %}
+      {% for page_num in posts.iter_pages() %}
+          {% if page_num %}
+            {% if posts.page == page_num %}
+              <a class="btn btn-info mb-4" href="{{url_for('look',username=name,page=page_num)}}">{{page_num}}</a>
+            {% else %}
+             <a class="btn btn-outline-info mb-4" href="{{url_for('look',username=name,page=page_num)}}">{{page_num}}</a>
+            {% endif %}
+          {% else %}
+           ...
+          {% endif %}
+          
+          
+        {% endfor %}
+      </div>
+
+    </div>
+
+{% endblock content %}

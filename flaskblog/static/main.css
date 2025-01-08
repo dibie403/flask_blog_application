@@ -1,0 +1,193 @@
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+
+.bg-steel {
+  background-color:#5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  color: #444444;
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-img2 {
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+}
+
+.account-img2 {
+  height: 25px;
+  width: 25px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.card{
+  color: #333;
+  background-color: #5f788a;
+  margin:25px;
+}
+.group a:hover{
+  color: red;
+  text-decoration: none
+}
+
+/* Style for the list group items */
+.list-group-item {
+  background-color: #f8f9fa; /* Default background color */
+  color: #333; /* Text color */
+  padding: 10px 15px;
+  border: 1px solid #ddd; /* Border around each item */
+  text-decoration: none; /* Remove underline from links */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+
+.list-group-item a {
+  text-decoration: none;
+  color: inherit; /* Use the same color as the list item */
+}
+
+/* Hover effect */
+.list-group-item:hover {
+  background-color: #007bff; /* Change background color on hover */
+  color: white; /* Change text color on hover */
+}
+
+.list-group-item:hover a {
+  color: white; /* Make sure link text also changes color on hover */
+}
+
+
+
+/* for the round image on top of homepage*/
+.image-section11 img {
+    transition: transform 0.2s ease-in-out;
+}
+.image-section11 img:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.image-section11 p {
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+/* admin css sytle */
+
+
+.container11 {
+    margin: 30px auto;
+    max-width: 1200px;
+}
+
+table.h1, table.h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f4f4f4;
+}
+
+.btn11 {
+    text-decoration: none;
+    padding: 5px 10px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-sm {
+    font-size: 0.8rem;
+}
+

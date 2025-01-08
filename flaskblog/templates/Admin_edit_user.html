@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center text-primary">Edit User</h1>
+        <form method="POST" action="{{ url_for('edit_user', user_id=user.id) }}">
+            
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="username" 
+                    name="username" 
+                    value="{{ user.username }}" 
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                    type="email" 
+                    class="form-control" 
+                    id="email" 
+                    name="email" 
+                    value="{{ user.email }}" 
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label for="is_admin" class="form-label">Admin Status</label>
+                <select class="form-select" id="is_admin" name="is_admin">
+                    <option value="true" {% if user.is_admin %}selected{% endif %}>Admin</option>
+                    <option value="false" {% if not user.is_admin %}selected{% endif %}>Regular User</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="is_active" class="form-label">Account Status</label>
+                <select class="form-select" id="is_active" name="is_active">
+                    <option value="true" {% if user.is_active %}selected{% endif %}>Active</option>
+                    <option value="false" {% if not user.is_active %}selected{% endif %}>Inactive</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="{{ url_for('admin_page') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="content-section"> 
+    <div class="post-content-section p-4 bg-light rounded shadow-sm">
+        <div class="d-flex justify-content-between align-items-center"> 
+            <h6 class="mb-0 text-primary">
+                <img class="rounded-circle article-img2" src="{{url_for('static', filename='profile_pics/'+ comment.user.image_file)}}">
+                <a href="{{url_for('look', username=comment.user.username)}}">{{ comment.user.username }}</a>
+            </h6>
+        </div>
+        <small class="text-muted">{{ comment.created_at.strftime('%Y-%m-%d') }}</small>
+        <p class="mb-0 text-secondary">{{ comment.content }}</p>
+    </div>
+    <div class="reply-section mt-4">
+        <!-- reply Form -->
+        <!-- Add/Edit reply Form -->
+       <form 
+            action="{% if edit_reply %}{{ url_for('edit_reply', reply_id=edit_reply.id) }}{% else %}{{ url_for('reply_comment', comment_id=comment.id) }}{% endif %}" 
+            method="POST" 
+            class="mb-3"
+        >
+
+        <div class="form-group">
+            <textarea 
+                name="content" 
+                rows="2" 
+                class="form-control" 
+                placeholder="Write your reply here..." 
+                required
+            >{% if edit_reply %}{{ edit_reply.content }}{% endif %}</textarea>
+
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm mt-1">
+            {% if edit_reply %}Update Reply{% else %}Post Reply{% endif %}
+        </button>
+    </form>
+    <div class="comments-section mt-4">
+
+        <!-- Replies Section -->
+        {% if comment.replies %}
+        <div class="replies mt-3 pl-3">
+            {% for reply in comment.replies %}
+            <div class="reply mb-2 p-2 rounded border shadow-sm">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Reply Author Details -->
+                    <h6 class="mb-0 text-primary">
+                        <img class="rounded-circle article-img2" 
+                             src="{{ url_for('static', filename='profile_pics/' + reply.user.image_file) }}" 
+                             alt="User Image">
+                        <a href="{{ url_for('look', username=reply.user.username) }}">{{ reply.user.username }}</a>
+                    </h6>
+                    <!-- Reply Timestamp -->
+                    <small class="text-muted">{{ reply.created_at.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <!-- Reply Content -->
+                <p class="mb-0 text-secondary mt-2">{{ reply.content }}</p>
+                {% if  current_user.username == reply.user.username%}
+
+                     <div>
+                        <small>
+                            <a href="{{ url_for('reply_comment', comment_id=reply.comment_id, edit_reply_id=reply.id) }}" class="text-primary">Edit</a>
+                        </small>
+                       <small>
+                            <form action="{{ url_for('delete_reply', reply_id=reply.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-link text-danger p-0 m-0 align-baseline">Delete</button>
+                            </form>
+                      </small>
+
+                    </div>
+                {% elif current_user.username ==comment.user.username: %}
+                    <small>
+                            <form action="{{ url_for('delete_reply', reply_id=reply.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-link text-danger p-0 m-0 align-baseline">Delete</button>
+                            </form>
+                      </small>
+                {% elif current_user.username == comment.post.author: %}
+                    <small>
+                            <form action="{{ url_for('delete_reply', reply_id=reply.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-link text-danger p-0 m-0 align-baseline">Delete</button>
+                            </form>
+                      </small>
+
+                {% elif current_user.username == comment.user.usename: %}
+                    <!-- Right-aligned Edit/Delete Links -->
+                    <div>
+                          <small>
+                           <a href="{{ url_for('reply_comment', comment_id=reply.comment_id, edit_reply_id=reply.id) }}" class="text-primary">Edit</a>
+                       <small>
+    
+                            <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-link text-danger p-0 m-0 align-baseline">Delete</button>
+                            </form>
+                      </small>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+</div>
+
+</div>
+{% endblock %}
