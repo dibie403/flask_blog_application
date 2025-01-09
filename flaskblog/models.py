@@ -118,7 +118,7 @@ class Notification(db.Model):
 
 
     def __repr__(self):
-         return f"Notification('{self.content}')"
+         return f"Notification('{self.content}','{self.user}')"
 
     
     

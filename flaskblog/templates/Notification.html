@@ -1,24 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
-   <div class="content-section">
-     <div class="comments-section mt-4">
-         <h2 class="text-center  text-secondary"><a>Notifications</a></h2><br>
-          {% for notification in notifications %}
-            {{user1= User.query.filter_by(user_id=notification.initiator)}}
-            
+<div class="content-section">
+    <div class="comments-section mt-4">
+        <h2 class="text-center text-secondary"><a>Notifications</a></h2><br>
+        {% for enriched_notification in notifications %}
+            {% set notification = enriched_notification.notification %}
+            {% set initiator = enriched_notification.initiator %}
 
             <div class="comments mb-3 p-3 rounded border shadow-sm">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="mb-0 text-primary">
-                        <img class="rounded-circle article-img2" src="{{url_for('static', filename='profile_pics/'user1.image_file)}}">
-                        <a href="{{ url_for('post_detail', title=notification.post.title) }}">{{ notification.content }}{{notification.initiator}}</a>
-                   </h6>
+                        <img class="rounded-circle article-img2" 
+                             src="{{ url_for('static', filename='profile_pics/' + initiator.image_file) }}">
+                        <a href="{{ url_for('post_detail', title=notification.post.title) }}">
+                            {{ notification.content }}
+                        </a>
+                    </h6>
                 </div>
             </div>
-          {% else %}
-             <h3 class="text-primary text-center" style="color: #428bca;">No notification yet!</h3>
-          {% endfor %}
-     </div>   
-  </div>
-    
+        {% else %}
+            <h3 class="text-primary text-center" style="color: #428bca;">No notification yet!</h3>
+        {% endfor %}
+    </div>   
+</div>
 {% endblock content %}

@@ -688,9 +688,19 @@ def reset_password(token):
 @app.route('/notification', methods=['GET', 'POST'])
 def notification():
     notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.date.desc())
-    
+    enriched_notifications = []
+
+    for notification in notifications:
+        initiator = User.query.get(notification.initiator)  # Fetch the initiator
+        enriched_notifications.append({
+            'notification': notification,
+            'initiator': initiator
+        })
+
+        print(enriched_notifications)
+
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('Notification.html',title='Notification',notifications=notifications,image_file=image_file)
+    return render_template('Notification.html',title='Notification',notifications=enriched_notifications,image_file=image_file)
 
  
     
