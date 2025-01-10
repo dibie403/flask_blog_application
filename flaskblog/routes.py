@@ -726,7 +726,21 @@ def notification():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('Notification.html',title='Notification',notifications=enriched_notifications,image_file=image_file)
 
- 
+@app.route('/search_post', methods=['GET', 'POST'])
+def search_post():
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    content = ''
+    if request.method == 'POST':
+        content = request.form['content']  # Get content from the form
+
+    page = request.args.get('page', 1, type=int)
+    # Apply pagination directly on the query object
+    post = Post.query.filter(Post.content.contains(content)).paginate(page=page, per_page=5)
+
+    return render_template('search.html', post=post,image_file=image_file)  # Render the results
+
+
+
     
     
 
