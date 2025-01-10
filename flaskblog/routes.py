@@ -58,7 +58,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f"You have been register successfully {form.username.data}!, please procceed to login😊", 'success')
-        return redirect(url_for('congratulation'))
+        return redirect(url_for('login'))
     return render_template('register.html',title='register',form=form)
 
 @app.route("/congratulation",methods=['POST','GET'])
@@ -656,7 +656,7 @@ def request_reset_token():
     form=RequestResetTokenForm()
     if form.validate_on_submit():
        user=User.query.filter_by(email=form.email.data).first()   
-       send_reset_email(user)
+       #send_reset_email(user)
        flash("An email has been sent to you with instruction to folow",'info')
        return redirect(url_for('login'))
     return render_template('request_reset_token.html',title='Reset_password',form=form)
