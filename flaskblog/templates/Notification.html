@@ -9,13 +9,24 @@
 
             <div class="comments mb-3 p-3 rounded border shadow-sm">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 text-primary">
-                        <img class="rounded-circle article-img2" 
-                             src="{{ url_for('static', filename='profile_pics/' + initiator.image_file) }}">
-                        <a href="{{ url_for('post_detail', title=notification.post.title) }}">
-                            {{ notification.content }}
-                        </a>
-                    </h6>
+                    <!-- Left Side: Image and Content -->
+                    <div class="d-flex align-items-center">
+                        <img class="rounded-circle article-img2 me-2" 
+                             src="{{ url_for('static', filename='profile_pics/' + initiator.image_file) }}" alt="Profile Picture">
+                        <div>
+                            <h6 class="mb-0 text-primary">
+                                <a href="{{ url_for('post_detail', title=notification.post.title) }}">
+                                    {{ notification.content }}
+                                </a>
+                            </h6>
+                        </div>
+                    </div>
+                    <!-- Right Side: Date -->
+                    <div class="text-muted">
+                        <small>
+                            {{ notification.date.strftime('%Y-%m-%d %H:%M:%S') }}
+                        </small>
+                    </div>
                 </div>
             </div>
         {% else %}
@@ -24,3 +35,4 @@
     </div>   
 </div>
 {% endblock content %}
+
