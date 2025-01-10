@@ -5,9 +5,7 @@
         <!--<img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/'+ post.author.image_file)}}">-->
        
         {% if post.content == 'your post is against our policy': %} 
-            <<div action="{{ url_for('update',post_id=post.id) }}">
-            <button type="submit" class="btn btn-sm">comment</button>
-        </div>
+            
 
         {% elif current_user.username == post.author.username %}
             <small class="ml-2">

@@ -567,6 +567,30 @@ def delete_post(post_id):
     return redirect(url_for('admin_page'))
 
 
+@app.route('/admin/delete_comment/<int:comment_id>', methods=['POST'])
+@login_required
+def delete_comment_admin(comment_id):
+    # Check if the user is an admin
+    if current_user.email != 'dibieemmanuel403@gmail.com':
+        flash("You are not authorized to perform this action.", "danger")
+        return redirect(url_for('admin_page'))
+
+    # Fetch the comment or raise a 404 if it doesn't exist
+    comment = Comment.query.get_or_404(comment_id)
+    
+    try:
+        # Delete the comment
+        db.session.delete(comment)
+        db.session.commit()
+        flash("Comment deleted successfully.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred while deleting the comment: {e}", "danger")
+
+    return redirect(url_for('admin_page'))
+
+
+
 @app.route('/admin/edit_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def edit_user(user_id):
@@ -611,7 +635,7 @@ def edit_post(post_id):
         post.content = request.form['content']
         db.session.commit()
         flash("Post updated successfully.", "success")
-    
+        return redirect(url_for('admin_page'))
 
     return render_template('Admin_edit_post.html', post=post)
 

@@ -95,7 +95,7 @@
                     <td>{{ comment.created_at }}</td>
                     <td>
                         <a class="btn11 btn-warning btn-sm">Edit</a>
-                        <form  method="POST" style="display:inline;">
+                        <form action="{{ url_for('delete_comment_admin', comment_id=comment.id) }}" method="POST" style="display:inline;">
                             <button type="submit" class="btn11 btn-danger btn-sm">Delete</button>
                         </form>
                     </td>
