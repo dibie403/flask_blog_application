@@ -711,7 +711,7 @@ def reset_password(token):
 
 @app.route('/notification', methods=['GET', 'POST'])
 def notification():
-    notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.date.desc()).limit(1).all()
+    notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.date.desc()).limit(10).all()
     enriched_notifications = []
 
     for notification in notifications:
