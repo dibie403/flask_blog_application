@@ -10,10 +10,10 @@ if __name__ == '__main__':
 print(os.environ.get("DB_"))
 print(os.environ.get("DB_PASSWORD"))
 
-from flaskblog.models import Notification
+from flaskblog.models import Post
 
 with app.app_context():
-    users=Notification.query.all()
+    users=Post.query.all()
     print(users)
 
 

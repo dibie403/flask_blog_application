@@ -117,6 +117,23 @@ def save_picture(form_picture):
 
     return picture_fn
 
+def save_picture1(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)  # Correct method
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/post_image', picture_fn)
+    
+    # Ensure the directory exists
+    os.makedirs(os.path.join(app.root_path, 'static/post_image'), exist_ok=True)
+    
+    # Resize and save the picture
+    output_size = (250, 250)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
+
 
 @app.route("/Account/edit", methods=['POST', 'GET'])
 @login_required
@@ -141,18 +158,44 @@ def edit():
     return render_template('edit.html', title='Edit', image_file=image_file, form=form)
 
 
-@app.route("/Account//post/new", methods=['POST', 'GET'])
+@app.route("/Account/post/new", methods=['POST', 'GET'])
 @login_required
 def new_post():
     form = CreatePostForm()
-    image_file= url_for('static', filename='profile_pics/' + current_user.image_file)
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    
     if form.validate_on_submit():
-        flash("Post created successfully", 'success')
-        post= Post(title=form.title.data, content=form.Content.data, author=current_user)
+        # Handle invalid file types
+        if form.picture.errors:
+            for error in form.picture.errors:
+                flash(f"File upload error: {error}", "danger")
+            return redirect(url_for('new_post'))
+        
+        # Save the image if provided
+        image = 'default.jpg'
+        if form.picture.data:
+            try:
+                picture_file = save_picture1(form.picture.data)
+                image = picture_file
+                print(f"Image saved: {image}")  # Debug log
+            except Exception as e:
+                print(f"Error saving image: {e}")
+                flash("Error saving the image. Please try again.", 'danger')
+                return redirect(url_for('new_post'))
+        
+        # Create and add the new post
+        post = Post(title=form.title.data, content=form.Content.data, author=current_user, image=image)
         db.session.add(post)
         db.session.commit()
+        flash("Post created successfully!", "success")
         return redirect(url_for('home'))
-    return render_template('create_new.html', title='New Post', form=form,image_file=image_file)
+    
+    return render_template('create_new.html', title='New Post', form=form, image_file=image_file)
+
+
+        
+       
+       
 
 
 @app.route("/show", methods=['POST', 'GET'])
@@ -206,6 +249,7 @@ def show_img2():
 def post_detail(title):
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     post = Post.query.filter_by(title=title).first_or_404()
+    #picture = url_for('static', filename='post_image/' + post.image)
     comments = Comment.query.filter_by(post_id=post.id).all()
     
     # Check for an edit_comment_id query parameter
@@ -738,6 +782,21 @@ def search_post():
     post = Post.query.filter(Post.content.contains(content)).paginate(page=page, per_page=5)
 
     return render_template('search.html', post=post,image_file=image_file)  # Render the results
+
+@app.route("/test-upload", methods=['POST', 'GET'])
+def test_upload():
+    if request.method == 'POST':
+        if 'file' in request.files:
+            file = request.files['file']
+            print(f"File received: {file.filename}")
+            return "File uploaded!"
+        return "No file received!"
+    return '''
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Upload</button>
+        </form>
+    '''
 
 
 
