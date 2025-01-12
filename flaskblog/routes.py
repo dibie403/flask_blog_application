@@ -19,7 +19,7 @@ from flask_mail import Message
 def home():
 
     pages=request.args.get('page',1,type=int)
-    post = Post.query.order_by(Post.date.desc()).paginate(per_page=1)
+    post = Post.query.order_by(Post.date.desc()).paginate(per_page=10)
     user=User.query.all()
     add_admin()
 
@@ -401,6 +401,7 @@ def reply1_comment(comment_id):
 def reply_comment(comment_id):
     # Fetch the comment to be replied to
     comment = Comment.query.get_or_404(comment_id)
+    
 
 
     if request.method == "POST":
