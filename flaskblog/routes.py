@@ -401,6 +401,16 @@ def reply1_comment(comment_id):
 def reply_comment(comment_id):
     # Fetch the comment to be replied to
     comment = Comment.query.get_or_404(comment_id)
+
+    if comment.user_id == current_user.id:
+        pass
+    else:
+        print(comment_id,comment.post)
+        notification=Notification(user_id=comment.user.id,content=f'{current_user.username} replied to your comment',initiator=current_user.id,comment_id=comment_id,post_id=comment.post_id)
+        print(notification)
+        db.session.add(notification)
+        db.session.commit
+        print(f'notification of reply added {current_user.username}')
     
 
 
@@ -763,7 +773,7 @@ def notification():
         initiator = User.query.get(notification.initiator)  # Fetch the initiator
         enriched_notifications.append({
             'notification': notification,
-            'initiator': initiator
+            'initiator': initiator,
         })
 
         print(enriched_notifications)
@@ -786,6 +796,13 @@ def search_post():
 
 @app.route("/test-upload", methods=['POST', 'GET'])
 def test_upload():
+    notifications = Notification.query.all()
+    print(notifications)
+
+    for notification in notifications:
+        db.session.delete(notification)
+        db.session.commit()
+    
     if request.method == 'POST':
         if 'file' in request.files:
             file = request.files['file']

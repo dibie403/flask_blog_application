@@ -15,9 +15,15 @@
                              src="{{ url_for('static', filename='profile_pics/' + initiator.image_file) }}" alt="Profile Picture">
                         <div>
                             <h6 class="mb-0 text-primary">
+                                {% if 'replied' in notification.content %}
+                                    <a href="{{ url_for('reply_comment', comment_id=notification.comment_id) }}">
+                                    {{ notification.content }}
+                                </a> 
+                                {% else %}
                                 <a href="{{ url_for('post_detail', title=notification.post.title) }}">
                                     {{ notification.content }}
                                 </a>
+                                {% endif %}
                             </h6>
                         </div>
                     </div>

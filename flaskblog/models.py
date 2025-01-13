@@ -109,17 +109,19 @@ class Notification(db.Model):
     content = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     initiator= db.Column(db.Integer, nullable=False,default=None)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=True)
 
 
 
     # Define relationships
     user = db.relationship('User', backref=db.backref('notifications', lazy=True))
     post = db.relationship('Post', backref=db.backref('notifications', lazy=True))
+    comment = db.relationship('Comment', backref=db.backref('notifications', lazy=True))
 
 
     def __repr__(self):
-         return f"Notification('{self.content}','{self.user}')"
+         return f"Notification('{self.content}','{self.user_id}')"
 
     
     
