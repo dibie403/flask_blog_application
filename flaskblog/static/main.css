@@ -202,7 +202,7 @@ table.h1, table.h2 {
   order: 1; /* Ensure the search box is the first item */
 }
 
-/* Navigation links follow the search box */
+
 }
 
 /* Responsive layout for small screens (e.g., phones) */
@@ -238,6 +238,27 @@ table.h1, table.h2 {
 
   .nav-item {
     order: 1; /* Keep other links in the original order */
+  }
+
+  /* Show the profile picture and username only on small screens */
+  .username {
+    display: inline; /* Show the username on small screens */
+  }
+
+  /* Show the profile image only on small screens */
+  .nav-item img {
+    margin: 0 auto; /* Center the profile image */
+  }
+}
+
+@media (min-width: 768px) {
+  /* Hide the username and profile image on large screens */
+  .username {
+    display: none; /* Hide the username on large screens */
+  }
+
+  .nav-item img {
+    display: block; /* Show only the profile image on larger screens */
   }
 }
 
