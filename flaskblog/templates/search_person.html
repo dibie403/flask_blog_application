@@ -9,9 +9,9 @@
         </a>
 
         <div class="media-body">
-          <h6 class="account-heading">{{ name.upper() }}⭐</h6>
+          <h6 class="account-heading">{{ user.username.upper() }}⭐</h6>
           <p class="text-secondary">☯️{{ user.email }}</p>
-          <!--<p class="text-secondary">offline 🐨</p>-->
+          <p class="text-secondary">offline 🐨</p>
        <h4>Write a short biography about yourself'</h4> 
        <div class="border-top pt-3">
         <small class="text-secondary">
@@ -32,26 +32,44 @@
           <img class="rounded-circle article-img" src="{{ picture }}">
           <div class="media-body">
             <div class="article-metadata ">
-              <h9 style = "color: #428bca">{{ name }}</h9>
+              <h9 style = "color: #428bca">{{post.username }}</h9>
               <small style = "color: grey" class=ml-4>{{ post.date.strftime('%Y- %m- %d')}}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('post_detail', title=post.title) }}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+            <!-- Post Content -->
+                <p class="article-content mt-2 text-justify text-secondary">
+                    {{ post.content[:150] }}...
+                    <a href="{{ url_for('post_detail', title=post.title) }}" 
+                       class="text-primary font-italic">
+                        Read More
+                    </a>
+                </p>
+          <div class="article-metadata">
+              <!-- Show the "Like" icon if the user has not liked the post -->
+              <form action="{{ url_for('post_detail', title=post.title) }}" method="POST" style="display: inline-block;">
+                  <button type="submit" style="border: none; background: none; cursor: pointer; color: #428bca">Like
+                      <img src="{{ url_for('static', filename='images/thumb-up.png') }}" alt="Like" style="width: 15px; height: 15px;">
+                  </button><a style="color: #428bca">{{ posts.likes | length }}</a>
+                  
+              </form>
+          
+              <!-- Pin Link -->
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                    Pin 🎯 1k
+                </a>
+
+                <!-- Comment Section -->
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                    Comment
+                </a>
+                <img src="{{ url_for('static', filename='images/talk.png') }}" alt="Comment" style="width: 15px; height: 15px;">
+                <a style="color: #428bca;">
+                    {{ post.comments.count() }}
+                </a>
+
+          </div>
         </article>
       {% endfor %}
-      {% for page_num in posts.iter_pages() %}
-          {% if page_num %}
-            {% if posts.page == page_num %}
-              <a class="btn btn-info mb-4" href="{{url_for('look',username=name,page=page_num)}}">{{page_num}}</a>
-            {% else %}
-             <a class="btn btn-outline-info mb-4" href="{{url_for('look',username=name,page=page_num)}}">{{page_num}}</a>
-            {% endif %}
-          {% else %}
-           ...
-          {% endif %}
-          
-          
-        {% endfor %}
       </div>
 
     </div>

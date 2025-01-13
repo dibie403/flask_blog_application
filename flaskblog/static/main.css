@@ -191,3 +191,53 @@ table.h1, table.h2 {
     font-size: 0.8rem;
 }
 
+.post-img {
+  height: 200px;
+  width: 400px;
+  
+
+
+
+.search-box {
+  order: 1; /* Ensure the search box is the first item */
+}
+
+/* Navigation links follow the search box */
+}
+
+/* Responsive layout for small screens (e.g., phones) */
+/* Responsive layout for small screens (e.g., phones) */
+@media (max-width: 767px) {
+  .navbar-nav {
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the left */
+    gap: 10px; /* Adjust spacing for stacked items */
+  }
+
+  .search-box {
+    order: 3; /* Move the search box to the last position */
+    width: 100%; /* Stretch the search box to fit the width */
+    margin-top: 10px;
+  }
+
+  .search-box form {
+    width: 100%; /* Ensure the form takes full width */
+    display: flex;
+    justify-content: flex-start; /* Align items to the left */
+    margin-left: 0px; /* Add some space on the left side */
+  }
+
+  .search-box input {
+    width: 90%; /* Adjust width for better usability */
+    max-width: 300px; /* Prevent excessive width */
+  }
+
+  .search-box button {
+    width: auto; /* Keep button size dynamic */
+  }
+
+  .nav-item {
+    order: 1; /* Keep other links in the original order */
+  }
+}
+

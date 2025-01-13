@@ -5,12 +5,28 @@
     <!-- Header Section -->
     <div class="header text-center mb-4">
         {% if current_user.is_authenticated %}
+        <div class="search-box mb-4">
+                  <form method="POST" action="{{ url_for('search_post') }}" style="display: flex; align-items: center;">
+                    <input 
+                      type="text" 
+                      name="content" 
+                      placeholder="Search Post..." 
+                      style="border: 2px solid #ddd; outline: none; padding: 10px 15px; border-radius: 25px; width: 250px; font-size: 16px; margin-right: 10px;">
+                    <button 
+                      type="submit" 
+                      style="background-color: #4caf50; color: white; border: none; padding: 5px 15px; cursor: pointer; font-size: 14px; border-radius: 15px; transition: background-color 0.3s ease;"
+                      onmouseover="this.style.backgroundColor='#45a049'"
+                      onmouseout="this.style.backgroundColor='#4caf50'">
+                      Search
+                    </button>
+                  </form>
+                </div>
         <h2 class="text-primary" style="text-align: left; margin-left: 20px;">
             TOP SCRIBERS
         </h2>
 
         <div class="image-section11 d-flex flex-wrap align-items-center mb-3 ml-4" style="gap: 25px;">
-    {% for user in user %}
+        {% for user in user %}
         <div class="text-center" style="max-width: 80px;">
             <a href="{{url_for('look',username=user.username)}}"><img class="rounded-circle border border-primary" 
                  src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" 

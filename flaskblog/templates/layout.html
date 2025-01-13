@@ -44,10 +44,28 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
-                <!--<a class="nav-item nav-link" href="{{ url_for('Account')}}">My Profile</a>-->
-                <a class="nav-item nav-link" href="{{ url_for('notification')}}">Notification</a>
-                <a class="nav-item nav-link" href="{{ url_for('logout')}}">Logout</a>
-                <a href="{{ url_for('Account')}}"> <img class="rounded-circle account-img2 md-2" src="{{ image_file }}"></a>
+                <div class="search-box">
+                  <form method="POST" action="{{ url_for('search_post') }}" style="display: flex; align-items: center;">
+                    <input 
+                      type="text" 
+                      name="content" 
+                      placeholder="Search..." 
+                      style="border: 2px solid #ddd; outline: none; padding: 10px 15px; border-radius: 25px; width: 250px; font-size: 16px; margin-right: 10px;">
+                    <button 
+                      type="submit" 
+                      style="background-color: #4caf50; color: white; border: none; padding: 5px 15px; cursor: pointer; font-size: 14px; border-radius: 15px; transition: background-color 0.3s ease;"
+                      onmouseover="this.style.backgroundColor='#45a049'"
+                      onmouseout="this.style.backgroundColor='#4caf50'">
+                      Search
+                    </button>
+                  </form>
+                </div>
+                <a class="nav-item nav-link" href="{{ url_for('notification') }}">Notification</a>
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                <a href="{{ url_for('Account') }}"> 
+                  <img class="rounded-circle account-img2 md-2" src="{{ image_file }}">
+                </a>
+
               {% else %}
                 <a class="nav-item nav-link" href="{{ url_for('login')}}">Login</a>
                 <a class="nav-item nav-link" href="{{ url_for('register')}}">Register</a>
@@ -79,27 +97,7 @@
         </div>
 
         <div class="col-md-4">
-          {% if current_user.is_authenticated %}
-            <form method="POST" action="{{ url_for('search_post') }}" style="display: flex; align-items: center;">
-             <form method="POST" action="{{ url_for('search_post') }}" style="display: flex; align-items: center;">
-              <input 
-                type="text" 
-                name="content"
-                placeholder="Search..." 
-                style="border: 2px solid #ddd; outline: none; padding: 10px 15px; border-radius: 25px; width: 250px; font-size: 16px; margin-right: 10px;">
-              <button 
-                type="submit"
-                style="background-color: #4caf50; color: white; border: none; padding: 5px 15px; cursor: pointer; font-size: 14px; border-radius: 15px; transition: background-color 0.3s ease;"
-                onmouseover="this.style.backgroundColor='#45a049'"
-                onmouseout="this.style.backgroundColor='#4caf50'">
-                Search
-              </button>
-            </form>
-
-
-          {% endif %}
           
-
 
           <div class="content-section mt-4">
             <h3>Our Sidebar</h3>
