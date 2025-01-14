@@ -9,7 +9,13 @@
         </a>
 
         <div class="media-body">
-          <h6 class="account-heading">{{ user.username.upper() }}⭐</h6>
+          {% if user.is_admin and user.email =='dibieemmanuel403@gmail.com' %}
+           <h6 class="account-heading">⭐{{ user.username.upper() }}</h6><sub style = "color: #428bca">||Founder 🎟️||</sub>
+          {% elif user.is_admin and user.email !='dibieemmanuel403@gmail.com' %}
+           <h6 class="account-heading">{{ user.username.upper() }} </h6><sub style = "color: #428bca">||Admin ⭐||</sub>
+          {% else %}
+           <h6 class="account-heading">{{ user.username.upper() }}</h6>
+          {% endif %}
           <p class="text-secondary">☯️{{ user.email }}</p>
           <p class="text-secondary">offline 🐨</p>
        <h4>Write a short biography about yourself'</h4> 
@@ -32,7 +38,7 @@
           <img class="rounded-circle article-img" src="{{ picture }}">
           <div class="media-body">
             <div class="article-metadata ">
-              <h9 style = "color: #428bca">{{post.username }}</h9>
+              <h9 style = "color: #428bca">{{ user.username }}</h9>
               <small style = "color: grey" class=ml-4>{{ post.date.strftime('%Y- %m- %d')}}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('post_detail', title=post.title) }}">{{ post.title }}</a></h2>

@@ -8,7 +8,13 @@
         </a>
 
         <div class="media-body">
-          <h6 class="account-heading">{{ current_user.username }}⭐⭐⭐</h6>
+          {% if current_user.is_admin and current_user.email=='dibieemmanuel403@gmail.com' %}
+           <h6 class="account-heading">⭐{{ current_user.username }}</h6><sub style = "color: #428bca">||Founder🎟️||</sub>
+           {% elif current_user.is_admin and current_user.username !='dibieemmanuel403' %}
+           <h6 class="account-heading">{{ current_user.username }}</h6><sub style = "color: #428bca">||Admin ⭐||</sub>
+           {% else %}
+           <h6 class="account-heading">{{ current_user.username }}</h6>
+           {% endif %}
           <p class="text-secondary">☯️{{ current_user.email }}</p>
           <p class="text-secondary">online 🦖</p>
        <h4>{{current_user.Biography}}</h4> 
@@ -31,7 +37,13 @@
           <img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/'+ post.author.image_file)}}">
           <div class="media-body">
             <div class="article-metadata ">
+              {% if post.author.is_admin and post.author.email=='dibieemmanuel403@gmail.com' %}
+              <h9 style = "color: #428bca">⭐{{ post.author.username }}<h9><sub>||Founder🎟️||</sub>
+              {% elif post.author.is_admin and post.author.email !='dibieemmanuel403@gmail.com' %}
+              <h9 style = "color: #428bca">{{ post.author.username }}<h9><sub>||Admin ⭐||</sub>
+              {% else  %}
               <h9 style = "color: #428bca">{{ post.author.username }}<h9>
+              {% endif %}
               <small style = "color: grey" class=ml-4>{{ post.date.strftime('%Y- %m- %d')}}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('post_detail', title=post.title) }}">{{ post.title }}</a></h2>

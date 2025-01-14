@@ -23,10 +23,22 @@
             <h1 class="post-title text-primary  mb-3">{{ post.title }}</h1>
             
             <div class="post-meta mb-3">
+                {% if post.author.is_admin and post.author.email=='dibieemmanuel403@gmail.com' %}
+                <p>
+                    <span class="font-weight-bold">Scriber:</span> 
+                    <a href="{{ url_for('look', username=post.author.username) }}" class="text-primary">⭐{{ post.author.username }}</a><sup style = "color: #428bca">||Founder🎟️||</sup>
+                </p>
+                {% elif post.author.is_admin and post.author.email!='dibieemmanuel403@gmail.com' %}
+                <p>
+                    <span class="font-weight-bold">Scriber:</span> 
+                    <a href="{{ url_for('look', username=post.author.username) }}" class="text-primary">{{ post.author.username }}</a><sup style = "color: #428bca">||Admin⭐||</sub>
+                </p>
+                {% else %}
                 <p>
                     <span class="font-weight-bold">Scriber:</span> 
                     <a href="{{ url_for('look', username=post.author.username) }}" class="text-primary">{{ post.author.username }}</a>
                 </p>
+                {% endif %}
                 <p>
                     <span class="font-weight-bold">Date Posted:</span> 
                     <span class="text-muted">{{ post.date.strftime('%Y-%m-%d') }}</span>
@@ -93,7 +105,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 text-primary">
                     <img class="rounded-circle article-img2" src="{{url_for('static', filename='profile_pics/'+ comment.user.image_file)}}">
+                    {% if comment.user.is_admin and comment.user.email=='dibieemmanuel403@gmail.com' %}
+                    <a href="{{url_for('look', username=comment.user.username)}}">⭐{{ comment.user.username }}</a><sup style = "color: #428bca">||Founder🎟️||</sup>
+                    {% elif comment.user.is_admin and comment.user.email!='dibieemmanuel403@gmail.com' %}
+                    <a href="{{url_for('look', username=comment.user.username)}}">{{ comment.user.username }}</a><sup style = "color: #428bca">||Admin⭐||</sup>
+                     {% else %}
                     <a href="{{url_for('look', username=comment.user.username)}}">{{ comment.user.username }}</a>
+                    {% endif %}
                 </h6>
                 <small class="text-muted">{{ comment.created_at.strftime('%Y-%m-%d') }}</small>
             </div>
