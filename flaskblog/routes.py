@@ -211,6 +211,7 @@ global picture
 @login_required
 def look(username):
     with app.app_context():
+
         user = User.query.filter_by(username=username).first_or_404()  # Fetch the user by username
         if user.username == current_user.username:
             return redirect(url_for('Account'))

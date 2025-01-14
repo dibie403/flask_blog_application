@@ -33,7 +33,7 @@
     <div class="content-section">
       <h2 class="text-center  text-secondary"><a>Timeline</a></h2><br>
       <div class="border-top pt-3">
-        {% for post in posts %}
+        {% for post in posts.items %}
          <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ picture }}">
           <div class="media-body">
@@ -83,6 +83,19 @@
           </div>
         </article>
       {% endfor %}
+      {% for page_num in posts.iter_pages() %}
+          {% if page_num %}
+            {% if posts.page == page_num %}
+              <a class="btn btn-info mb-4" href="{{url_for('look',page=page_num,username=user.username)}}">{{page_num}}</a>
+            {% else %}
+             <a class="btn btn-outline-info mb-4" href="{{url_for('look',page=page_num,username=user.username)}}">{{page_num}}</a>
+            {% endif %}
+          {% else %}
+           ...
+          {% endif %}
+          
+          
+        {% endfor %}
       </div>
 
     </div>
