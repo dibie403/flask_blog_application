@@ -38,7 +38,14 @@
           <img class="rounded-circle article-img" src="{{ picture }}">
           <div class="media-body">
             <div class="article-metadata ">
-              <h9 style = "color: #428bca">{{ user.username }}</h9>
+               {% if user.is_admin and user.email =='dibieemmanuel403@gmail.com' %}
+                 <h9 style = "color: #428bca">{{ user.username }}</h9><sup style = "color: #428bca"> ||Founder 🎟️||</sup>
+                {% elif user.is_admin and user.email !='dibieemmanuel403@gmail.com' %}
+                 <h9 style = "color: #428bca">{{ user.username }}</h9><sup style = "color: #428bca"> ||Admin ⭐||</sup>
+                {% else %}
+                 <h6 class="account-heading">{{ user.username.upper() }}</h6>
+                {% endif %}
+
               <small style = "color: grey" class=ml-4>{{ post.date.strftime('%Y- %m- %d')}}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('post_detail', title=post.title) }}">{{ post.title }}</a></h2>
