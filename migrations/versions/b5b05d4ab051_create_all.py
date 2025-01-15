@@ -1,8 +1,8 @@
-"""craete all table
+"""create all
 
-Revision ID: da980e90516c
+Revision ID: b5b05d4ab051
 Revises: 
-Create Date: 2025-01-12 17:54:06.232395
+Create Date: 2025-01-15 18:35:37.051086
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'da980e90516c'
+revision = 'b5b05d4ab051'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,6 +29,13 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
+    )
+    op.create_table('feedback',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('content', sa.Text(), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('post',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -65,7 +72,9 @@ def upgrade():
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('date', sa.DateTime(), nullable=False),
     sa.Column('initiator', sa.Integer(), nullable=False),
-    sa.Column('post_id', sa.Integer(), nullable=False),
+    sa.Column('post_id', sa.Integer(), nullable=True),
+    sa.Column('comment_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['comment_id'], ['comment.id'], ),
     sa.ForeignKeyConstraint(['post_id'], ['post.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -91,5 +100,6 @@ def downgrade():
     op.drop_table('love')
     op.drop_table('comment')
     op.drop_table('post')
+    op.drop_table('feedback')
     op.drop_table('user')
     # ### end Alembic commands ###

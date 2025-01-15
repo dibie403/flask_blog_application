@@ -83,4 +83,8 @@ class ResetPasswordForm(FlaskForm):
 	confirm_password=PasswordField('Comfirm Password',validators=[DataRequired(),EqualTo('password')])
 	submit=SubmitField('Reset')
 
+class FeedbackForm(FlaskForm):
+    Content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Post')
+
 

@@ -123,6 +123,14 @@ class Notification(db.Model):
     def __repr__(self):
          return f"Notification('{self.content}','{self.user_id}')"
 
+class Feedback(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+         return f"Feedback('{self.content}', '{self.user_id}')"
+
     
     
     

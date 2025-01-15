@@ -6,8 +6,8 @@ from sqlalchemy import func
 from PIL import Image
 from flask import render_template,url_for, flash, redirect,request
 from flaskblog import app,db,bcrypt,mail
-from flaskblog.forms import RegistrationForm,LoginForm,AccountUpdateForm,CreatePostForm,UpdatePostForm,RequestResetTokenForm,ResetPasswordForm
-from flaskblog.models import User,Post,Comment,Reply,Love,Notification
+from flaskblog.forms import RegistrationForm,LoginForm,AccountUpdateForm,CreatePostForm,UpdatePostForm,RequestResetTokenForm,ResetPasswordForm,FeedbackForm
+from flaskblog.models import User,Post,Comment,Reply,Love,Notification,Feedback
 from flask_login import login_user,current_user,logout_user,login_required
 from flask_mail import Message
 
@@ -816,6 +816,23 @@ def test_upload():
             <button type="submit">Upload</button>
         </form>
     '''
+
+@app.route("/feedback", methods=['POST', 'GET'])
+@login_required
+def feedback():
+    form = FeedbackForm()
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    
+    if form.validate_on_submit():
+        
+        # Create and add the new feedback
+        feedback = Feedback(content=form.Content.data, user_id=current_user.id)
+        db.session.add(feedback)
+        db.session.commit()
+        flash("feedback sent successfully!", "success")
+        return redirect(url_for('home'))
+    
+    return render_template('feedback.html', title='feedback', form=form, image_file=image_file)
 
 
 
