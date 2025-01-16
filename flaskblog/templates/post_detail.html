@@ -47,9 +47,13 @@
 
             <div class="post-content">
                 <h5 class="font-weight-bold">Content:</h5>
-                <img class=" post-img" src="{{url_for('static', filename='post_image/'+ post.image)}}">
+                {% if post.image and post.image != '' %}
+                    <img class="post-img" src="{{ url_for('static', filename='post_image/' + post.image) }}" alt="Post Image">
+                {% endif %}
                 <p class="article-content text-justify text-secondary border-left pl-3">{{ post.content }}</p>
             </div>
+
+
         </div>
 
          <div class="article-metadata">

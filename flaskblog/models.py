@@ -65,7 +65,7 @@ class Post(db.Model):
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False,default=False)
-    image = db.Column(db.String(20), nullable=False, default='default.jpg')
+    image = db.Column(db.String(20), nullable=True)
     
 
     def __repr__(self):
@@ -127,6 +127,9 @@ class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
+
+    user = db.relationship('User', backref=db.backref('feedbacks', lazy=True))
+
 
     def __repr__(self):
          return f"Feedback('{self.content}', '{self.user_id}')"

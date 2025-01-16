@@ -163,6 +163,7 @@ def edit():
 def new_post():
     form = CreatePostForm()
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    image = None  # Set image to None initially to avoid setting a default image
     
     if form.validate_on_submit():
         # Handle invalid file types
@@ -172,26 +173,29 @@ def new_post():
             return redirect(url_for('new_post'))
         
         # Save the image if provided
-        image = 'default.jpg'
         if form.picture.data:
             try:
-                picture_file = save_picture1(form.picture.data)
-                image = picture_file
+                picture_file = save_picture1(form.picture.data)  # Assuming this function saves the image
+                image = picture_file  # Update the image file name to the saved file
                 print(f"Image saved: {image}")  # Debug log
             except Exception as e:
                 print(f"Error saving image: {e}")
                 flash("Error saving the image. Please try again.", 'danger')
                 return redirect(url_for('new_post'))
         
-        # Create and add the new post
-        post = Post(title=form.title.data, content=form.Content.data, author=current_user, image=image)
+        # Create and add the new post, only add the image if it was uploaded
+        post = Post(
+            title=form.title.data.upper(), 
+            content=form.Content.data, 
+            author=current_user, 
+            image=image  # If no image, 'image' will be None, and no default will be set
+        )
         db.session.add(post)
         db.session.commit()
         flash("Post created successfully!", "success")
         return redirect(url_for('home'))
     
     return render_template('create_new.html', title='New Post', form=form, image_file=image_file)
-
 
         
        
@@ -833,6 +837,21 @@ def feedback():
         return redirect(url_for('home'))
     
     return render_template('feedback.html', title='feedback', form=form, image_file=image_file)
+
+
+@app.route("/feedback_view")
+def feedback_view():
+    # Get the page number from the request arguments (default is 1)
+    page = request.args.get('page', 1, type=int)
+    
+    # Use .paginate() on the SQLAlchemy query object
+    post = Feedback.query.paginate(page=page, per_page=10)
+    
+    # Construct the URL for the user's profile image
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+   
+    # Render the template with the paginated posts and other data
+    return render_template('show_feedback.html', post=post, title='Feedback', image_file=image_file)
 
 
 
