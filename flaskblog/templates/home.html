@@ -60,7 +60,7 @@
                  width="60" height="60">
             <div class="media-body">
                 <!-- Metadata -->
-                {% if post.author.is_admin and post.author.email=='dibieemmanuel403@gmail.com' %}
+                {% if post.author.email=='dibieemmanuel403@gmail.com' %}
                 <div class="article-metadata d-flex justify-content-between align-items-center">
                     <a href="{{ url_for('look', username=post.author.username) }}" 
                        class="text-primary">

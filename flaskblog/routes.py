@@ -100,7 +100,7 @@ def Account():
     page = request.args.get('page', 1, type=int)
     
     # Query the posts related to the current user, ordered by date descending
-    post = Post.query.filter_by(user_id=current_user.id).order_by(Post.date.desc()).paginate(page=page, per_page=1)
+    post = Post.query.filter_by(user_id=current_user.id).order_by(Post.date.desc()).paginate(page=page, per_page=10)
     
     return render_template('Account.html', title='Account', post=post, image_file=image_file)
 
@@ -223,7 +223,7 @@ def look(username):
             page = request.args.get('page', 1, type=int)
     
             # Query the posts related to the current user, ordered by date descending
-            posts= Post.query.filter_by(user_id=user.id).order_by(Post.date.desc()).paginate(page=page, per_page=1)
+            posts= Post.query.filter_by(user_id=user.id).order_by(Post.date.desc()).paginate(page=page, per_page=10)
             #posts = user.posts  # Get all posts by the user
             name = user.username
             email = user.email

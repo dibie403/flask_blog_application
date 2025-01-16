@@ -9,7 +9,7 @@
         </a>
 
         <div class="media-body">
-          {% if user.is_admin and user.email =='dibieemmanuel403@gmail.com' %}
+          {% if user.email =='dibieemmanuel403@gmail.com' %}
            <h6 class="account-heading">⭐{{ user.username.upper() }}</h6><sub style = "color: #428bca">||Founder 🎟️||</sub>
           {% elif user.is_admin and user.email !='dibieemmanuel403@gmail.com' %}
            <h6 class="account-heading">{{ user.username.upper() }} </h6><sub style = "color: #428bca">||Admin ⭐||</sub>
@@ -38,7 +38,7 @@
           <img class="rounded-circle article-img" src="{{ picture }}">
           <div class="media-body">
             <div class="article-metadata ">
-               {% if user.is_admin and user.email =='dibieemmanuel403@gmail.com' %}
+               {% if  user.email =='dibieemmanuel403@gmail.com' %}
                  <h9 style = "color: #428bca">{{ user.username }}</h9><sup style = "color: #428bca"> ||Founder 🎟️||</sup>
                 {% elif user.is_admin and user.email !='dibieemmanuel403@gmail.com' %}
                  <h9 style = "color: #428bca">{{ user.username }}</h9><sup style = "color: #428bca"> ||Admin ⭐||</sup>

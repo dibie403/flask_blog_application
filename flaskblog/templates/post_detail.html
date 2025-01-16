@@ -23,7 +23,7 @@
             <h1 class="post-title text-primary  mb-3">{{ post.title }}</h1>
             
             <div class="post-meta mb-3">
-                {% if post.author.is_admin and post.author.email=='dibieemmanuel403@gmail.com' %}
+                {% if  post.author.email=='dibieemmanuel403@gmail.com' %}
                 <p>
                     <span class="font-weight-bold">Scriber:</span> 
                     <a href="{{ url_for('look', username=post.author.username) }}" class="text-primary">⭐{{ post.author.username }}</a><sup style = "color: #428bca"> ||Founder🎟️||</sup>
@@ -109,7 +109,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 text-primary">
                     <img class="rounded-circle article-img2" src="{{url_for('static', filename='profile_pics/'+ comment.user.image_file)}}">
-                    {% if comment.user.is_admin and comment.user.email=='dibieemmanuel403@gmail.com' %}
+                    {%if comment.user.email=='dibieemmanuel403@gmail.com' %}
                     <a href="{{url_for('look', username=comment.user.username)}}">⭐{{ comment.user.username }}</a><sup style = "color: #428bca"> ||Founder🎟️||</sup>
                     {% elif comment.user.is_admin and comment.user.email!='dibieemmanuel403@gmail.com' %}
                     <a href="{{url_for('look', username=comment.user.username)}}">{{ comment.user.username }}</a> <sup style = "color: #428bca"> ||Admin⭐||</sup>
