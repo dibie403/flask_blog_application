@@ -2,20 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "fake/run.py",
+      "src": "run.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "/fake/flaskblog/static/$1"
+      "dest": "/flaskblog/static/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/fake/run.py"
+      "dest": "run.py"
     }
   ]
 }
-
-
