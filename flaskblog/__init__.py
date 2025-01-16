@@ -10,9 +10,10 @@ from flask_mail import Mail
 # Initialize Flask app with static and template folders explicitly specified
 app = Flask(
     __name__,
-    static_folder=Config.STATIC_FOLDER,
-    template_folder=Config.TEMPLATES_FOLDER
+    static_folder="static",
+    template_folder="templates"
 )
+
 # Load configurations
 app.config.from_object(Config)
 
