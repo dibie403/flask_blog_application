@@ -12,4 +12,5 @@ if __name__ == '__main__':
 
 
 
-    
+SECRET_KEY=(os.environ.get('SECRET_KEY'))
+print(SECRET_KEY)
