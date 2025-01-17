@@ -4,7 +4,9 @@ import os
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.config['DEBUG'] = False
+
+  
 
 
 SQLALCHEMY_DATABASE_URI = (os.environ.get('SQLALCHEMY_DATABASE_URI'))
