@@ -47,19 +47,24 @@ def just():
     
 
 
-@app.route("/register",methods=['POST','GET'])
+@app.route("/register", methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
-    form=RegistrationForm()
+    form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password=bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user=User(username=form.username.data,email=form.email.data,password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        flash(f"You have been register successfully {form.username.data}!, please procceed to login😊", 'success')
-        return redirect(url_for('login'))
-    return render_template('register.html',title='register',form=form)
+        try:
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+            db.session.add(user)
+            db.session.commit()
+            flash(f"You have been registered successfully {form.username.data}! Please proceed to login 😊", 'success')
+            return redirect(url_for('login'))
+        except Exception as e:
+            app.logger.error(f"Error during registration: {e}")
+            flash("An error occurred while processing your registration. Please try again.", "danger")
+    return render_template('register.html', title='register', form=form)
+
 
 @app.route("/congratulation",methods=['POST','GET'])
 def congratulation():

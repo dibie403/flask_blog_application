@@ -1,4 +1,6 @@
 import os
+import logging
+from logging.handlers import RotatingFileHandler
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -32,6 +34,13 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get("DB_USER")  # Email username from env
 app.config['MAIL_PASSWORD'] = os.environ.get("DBPASSWORD")  # Email password from env
 mail = Mail(app)
+
+if not app.debug:  # Logging is enabled only in production mode
+    if not os.path.exists('logs'):
+        os.mkdir('logs')  # Create a logs directory if it doesn't exist
+    handler = RotatingFileHandler('logs/error.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.ERROR)
+    app.logger.addHandler(handler)
 
 # Import routes
 from flaskblog import routes
