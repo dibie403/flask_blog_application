@@ -254,7 +254,7 @@ def show_img2():
     
     return render_template('show_image2.html', picture=picture)
 
-@app.route("/post/<title>", methods=['GET'])
+@app.route("/post/<title>",methods=['POST','GET'])
 @login_required
 def post_detail(title):
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
