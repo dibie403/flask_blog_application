@@ -26,7 +26,7 @@
                 <!-- Post Title -->
                 <h2 class="mt-2">
                     <a class="article-title" 
-                       href="{{ url_for('post_detail', title=post.title) }}">
+                       href="{{ url_for('post_detail', slug=post.slug) }}">
                         {{ post.title }}
                     </a>
                 </h2>
@@ -34,26 +34,26 @@
                 <!-- Post Content -->
                 <p class="article-content mt-2 text-justify text-secondary">
                     {{ post.content[:150] }}...
-                    <a href="{{ url_for('post_detail', title=post.title) }}" 
+                    <a href="{{ url_for('post_detail', slug=post.slug) }}" 
                        class="text-primary font-italic">
                         Read More
                     </a>
                 </p>
            <div class="article-metadata">
               <!-- Show the "Like" icon if the user has not liked the post -->
-              <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+              <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', slug=post.slug) }}">
                      <img src="{{ url_for('static', filename='images/thumb-up.png') }}" alt="Like" style="width: 15px; height: 15px;">
                 </a><a style="color: #428bca">{{ post.likes | length }}
 
              
           
               <!-- Pin Link -->
-                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', slug=post.slug) }}">
                     Pin 🎯 1k
                 </a>
 
                 <!-- Comment Section -->
-                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', slug=post.slug) }}">
                     Comment
                 </a>
                 <img src="{{ url_for('static', filename='images/talk.png') }}" alt="Comment" style="width: 15px; height: 15px;">

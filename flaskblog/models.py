@@ -66,6 +66,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False,default=False)
     image = db.Column(db.String(255), nullable=True)
+    slug = db.Column(db.String(100), unique=True, nullable=False)
     
 
     def __repr__(self):

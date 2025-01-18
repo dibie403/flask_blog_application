@@ -46,11 +46,11 @@
               {% endif %}
               <small style = "color: grey" class=ml-4>{{ post.date.strftime('%Y- %m- %d')}}</small>
             </div>
-            <h2><a class="article-title" href="{{ url_for('post_detail', title=post.title) }}">{{ post.title }}</a></h2>
+            <h2><a class="article-title" href="{{ url_for('post_detail', slug=post.slug) }}">{{ post.title }}</a></h2>
             <!-- Post Content -->
                 <p class="article-content mt-2 text-justify text-secondary">
                     {{ post.content[:150] }}...
-                    <a href="{{ url_for('post_detail', title=post.title) }}" 
+                    <a href="{{ url_for('post_detail', slug=post.slug) }}" 
                        class="text-primary font-italic">
                         Read More
                     </a>
@@ -58,7 +58,7 @@
 
           <div class="article-metadata">
               <!-- Show the "Like" icon if the user has not liked the post -->
-              <form action="{{ url_for('post_detail', title=post.title) }}" method="POST" style="display: inline-block;">
+              <form action="{{ url_for('post_detail', slug=post.slug) }}" method="POST" style="display: inline-block;">
                   <button type="submit" style="border: none; background: none; cursor: pointer; color: #428bca">Like
                       <img src="{{ url_for('static', filename='images/thumb-up.png') }}" alt="Like" style="width: 15px; height: 15px;">
                   </button><a style="color: #428bca">{{ post.likes | length }}</a>
@@ -66,12 +66,12 @@
               </form>
           
               <!-- Pin Link -->
-                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', slug=post.slug) }}">
                     Pin 🎯 1k
                 </a>
 
                 <!-- Comment Section -->
-                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', slug=post.slug) }}">
                     Comment
                 </a>
                 <img src="{{ url_for('static', filename='images/talk.png') }}" alt="Comment" style="width: 15px; height: 15px;">

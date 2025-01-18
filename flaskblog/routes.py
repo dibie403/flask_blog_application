@@ -1,5 +1,6 @@
 import secrets
 import os
+import re
 import random
 from flask import jsonify
 from sqlalchemy import func
@@ -163,6 +164,13 @@ def edit():
     return render_template('edit.html', title='Edit', image_file=image_file, form=form)
 
 
+
+def generate_slug(title):
+    slug = re.sub(r'[^a-zA-Z0-9]+', '-', title.lower()).strip('-')
+    return slug
+
+
+
 @app.route("/Account/post/new", methods=['POST', 'GET'])
 @login_required
 def new_post():
@@ -188,9 +196,13 @@ def new_post():
                 flash("Error saving the image. Please try again.", 'danger')
                 return redirect(url_for('new_post'))
         
+        # Generate the slug based on the title
+        slug = generate_slug(form.title.data)  # Assuming you have the generate_slug function
+        
         # Create and add the new post, only add the image if it was uploaded
         post = Post(
             title=form.title.data.upper(), 
+            slug=slug,  # Include the slug in the post
             content=form.Content.data, 
             author=current_user, 
             image=image  # If no image, 'image' will be None, and no default will be set
@@ -202,7 +214,6 @@ def new_post():
     
     return render_template('create_new.html', title='New Post', form=form, image_file=image_file)
 
-        
        
        
 
@@ -254,12 +265,11 @@ def show_img2():
     
     return render_template('show_image2.html', picture=picture)
 
-@app.route("/post/<title>", methods=['POST', 'GET'])
+@app.route("/post/<slug>", methods=['POST', 'GET'])
 @login_required
-def post_detail(title):
+def post_detail(slug):
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    post = Post.query.filter_by(title=title).first_or_404()
-    #picture = url_for('static', filename='post_image/' + post.image)
+    post = Post.query.filter_by(slug=slug).first_or_404()  # Query by slug instead of title
     comments = Comment.query.filter_by(post_id=post.id).all()
     
     # Check for an edit_comment_id query parameter
@@ -267,8 +277,8 @@ def post_detail(title):
     edit_comment = Comment.query.get(edit_comment_id) if edit_comment_id else None
     
     # Render the post detail template with the edit_comment context
-    return render_template('post_detail.html',post=post,image_file=image_file,comments=comments,edit_comment=edit_comment)
-    
+    return render_template('post_detail.html', post=post, image_file=image_file, comments=comments, edit_comment=edit_comment)
+
 
 
 
@@ -289,7 +299,7 @@ def update(post_id):
         post.content = form.Content.data
         db.session.commit()
         flash("blog updated successfully", 'success')
-        return redirect(url_for('post_detail',title=post.title))
+        return redirect(url_for('post_detail',slug=post.slug))
     elif request.method == 'GET':
         form.title.data = post.title
         form.Content.data = post.content
@@ -342,7 +352,7 @@ def add_comment(post_id):
     comment = Comment(content=content, user_id=current_user.id, post_id=post.id)
     db.session.add(comment)
     db.session.commit()
-    return redirect(url_for('post_detail', post_id=post.id,title=post.title))
+    return redirect(url_for('post_detail', post_id=post.id,slug=post.slug))
 
 @app.route("/post/detail/comment/delete/<int:comment_id>", methods=["POST"])
 @login_required
@@ -360,7 +370,7 @@ def delete_comment(comment_id):
         db.session.rollback()
         flash("An error occurred while deleting the comment.", "danger")
         print(e)
-    return redirect(url_for('post_detail',title=comment.post.title, post_id=comment.post.id))
+    return redirect(url_for('post_detail',slug=comment.post.slug, post_id=comment.post.id))
     
 
 @app.route("/post/detail/comment/edit/<int:comment_id>", methods=["POST"])
@@ -377,14 +387,14 @@ def edit_comment(comment_id):
     form_content = request.form.get("content", "").strip()  # Ensure no leading/trailing spaces
     if not form_content:
         flash("Comment cannot be empty.", "danger")
-        return redirect(url_for('post_detail', title=comment.post.title, edit_comment_id=comment_id))
+        return redirect(url_for('post_detail', slug=comment.post.slug, edit_comment_id=comment_id))
     
     comment.content = form_content
     db.session.commit()
     flash("Comment updated successfully!", "success")
     
     # Redirect back to the post detail page
-    return redirect(url_for('post_detail', title=comment.post.title))
+    return redirect(url_for('post_detail', slug=comment.post.slug))
 
 
 @app.route("/comment/reply1/<int:comment_id>", methods=["POST","GET"])
@@ -857,6 +867,8 @@ def feedback_view():
    
     # Render the template with the paginated posts and other data
     return render_template('show_feedback.html', post=post, title='Feedback', image_file=image_file)
+
+
 
 
 

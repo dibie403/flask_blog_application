@@ -126,7 +126,7 @@
 
                      <div>
                         <small>
-                            <a href="{{ url_for('post_detail', title=post.title, edit_comment_id=comment.id) }}" class="text-primary">Edit</a>
+                            <a href="{{ url_for('post_detail', slug=post.slug, edit_comment_id=comment.id) }}" class="text-primary">Edit</a>
                         </small>
                        <small>
                             <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="POST" class="d-inline">
@@ -148,7 +148,7 @@
                     <!-- Right-aligned Edit/Delete Links -->
                     <div>
                         <small>
-                            <a href="{{ url_for('post_detail', title=post.title, edit_comment_id=comment.id) }}" class="text-primary">Edit</a>
+                            <a href="{{ url_for('post_detail', slug=post.slug, edit_comment_id=comment.id) }}" class="text-primary">Edit</a>
                         </small>
     
                             <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="POST" class="d-inline">
@@ -163,7 +163,7 @@
                 {% if current_user.email == 'dibieemmanuel403@gmail.com': %}
                    <div>
                         <small>
-                            <a href="{{ url_for('post_detail', title=post.title, edit_comment_id=comment.id) }}" class="text-primary">Edit</a>
+                            <a href="{{ url_for('post_detail', slug=post.slug, edit_comment_id=comment.id) }}" class="text-primary">Edit</a>
                         </small>
                        <small>
                             <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="POST" class="d-inline">
