@@ -190,7 +190,7 @@ def new_post():
         
         # Create and add the new post, only add the image if it was uploaded
         post = Post(
-            title=form.title.data.upper(), 
+            title=form.title.data, 
             content=form.Content.data, 
             author=current_user, 
             image=image  # If no image, 'image' will be None, and no default will be set
