@@ -1,0 +1,103 @@
+
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+      <h2 class="text-secondary"><a>PROFILE</a></h2>
+      <div class="media">
+        <a href="{{ url_for('show_img2',picture=picture) }}">
+          <img class="rounded-circle account-img" src="{{ picture }}" alt="Profile Picture">
+        </a>
+
+        <div class="media-body">
+          {% if user.email =='dibieemmanuel403@gmail.com' %}
+           <h6 class="account-heading">⭐{{ user.username.upper() }}</h6><sub style = "color: #428bca">||Founder 🎟️||</sub>
+          {% elif user.is_admin and user.email !='dibieemmanuel403@gmail.com' %}
+           <h6 class="account-heading">{{ user.username.upper() }} </h6><sub style = "color: #428bca">||Admin ⭐||</sub>
+          {% else %}
+           <h6 class="account-heading">{{ user.username.upper() }}</h6>
+          {% endif %}
+          <p class="text-secondary">☯️{{ user.email }}</p>
+          <p class="text-secondary">offline 🐨</p>
+       <h4>Write a short biography about yourself'</h4> 
+       <div class="border-top pt-3">
+        <small class="text-secondary">
+          <a class="ml-2" href="#">Connect</a>
+        </small>
+        <small class="text-secondary">
+          <a class="ml-2" href="#">POP User</a>
+        </small>
+       </div>
+        </div>
+      </div>  
+    </div>
+    <div class="content-section">
+      <h2 class="text-center  text-secondary"><a>Timeline</a></h2><br>
+      <div class="border-top pt-3">
+        {% for post in posts.items %}
+         <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ picture }}">
+          <div class="media-body">
+            <div class="article-metadata ">
+               {% if  user.email =='dibieemmanuel403@gmail.com' %}
+                 <h9 style = "color: #428bca">{{ user.username }}</h9><sup style = "color: #428bca"> ||Founder 🎟️||</sup>
+                {% elif user.is_admin and user.email !='dibieemmanuel403@gmail.com' %}
+                 <h9 style = "color: #428bca">{{ user.username }}</h9><sup style = "color: #428bca"> ||Admin ⭐||</sup>
+                {% else %}
+                 <h6 class="account-heading">{{ user.username.upper() }}</h6>
+                {% endif %}
+
+              <small style = "color: grey" class=ml-4>{{ post.date.strftime('%Y- %m- %d')}}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('post_detail', title=post.title) }}">{{ post.title }}</a></h2>
+            <!-- Post Content -->
+                <p class="article-content mt-2 text-justify text-secondary">
+                    {{ post.content[:150] }}...
+                    <a href="{{ url_for('post_detail', title=post.title) }}" 
+                       class="text-primary font-italic">
+                        Read More
+                    </a>
+                </p>
+          <div class="article-metadata">
+              <!-- Show the "Like" icon if the user has not liked the post -->
+              <form action="{{ url_for('post_detail', title=post.title) }}" method="POST" style="display: inline-block;">
+                  <button type="submit" style="border: none; background: none; cursor: pointer; color: #428bca">Like
+                      <img src="{{ url_for('static', filename='images/thumb-up.png') }}" alt="Like" style="width: 15px; height: 15px;">
+                  </button><a style="color: #428bca">{{ posts.likes | length }}</a>
+                  
+              </form>
+          
+              <!-- Pin Link -->
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                    Pin 🎯 1k
+                </a>
+
+                <!-- Comment Section -->
+                <a class="ml-2" style="color: #428bca;" href="{{ url_for('post_detail', title=post.title) }}">
+                    Comment
+                </a>
+                <img src="{{ url_for('static', filename='images/talk.png') }}" alt="Comment" style="width: 15px; height: 15px;">
+                <a style="color: #428bca;">
+                    {{ post.comments.count() }}
+                </a>
+
+          </div>
+        </article>
+      {% endfor %}
+      {% for page_num in posts.iter_pages() %}
+          {% if page_num %}
+            {% if posts.page == page_num %}
+              <a class="btn btn-info mb-4" href="{{url_for('look',page=page_num,username=user.username)}}">{{page_num}}</a>
+            {% else %}
+             <a class="btn btn-outline-info mb-4" href="{{url_for('look',page=page_num,username=user.username)}}">{{page_num}}</a>
+            {% endif %}
+          {% else %}
+           ...
+          {% endif %}
+          
+          
+        {% endfor %}
+      </div>
+
+    </div>
+
+{% endblock content %}

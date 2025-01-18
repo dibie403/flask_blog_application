@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center text-primary">Edit Posts</h1>
+        <form method="POST" action="{{ url_for('edit_post', post_id=post.id) }}">
+            
+            <div class="mb-3">
+                <label for="title" class="form-label">title</label>
+                <input 
+                    type="title" 
+                    class="form-control" 
+                    id="title" 
+                    name="title" 
+                    value="{{ post.title }}" 
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="content" 
+                    name="content" 
+                    value="{{ post.content }}" 
+                    required>
+            </div>
+
+
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="{{ url_for('admin_page') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+
+{% endblock content %}
