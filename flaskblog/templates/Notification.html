@@ -20,7 +20,7 @@
                                     {{ notification.content }}
                                 </a> 
                                 {% else %}
-                                <a href="{{ url_for('post_detail', title=notification.post.title) }}">
+                                <a href="{{ url_for('post_detail', slug=notification.post.slug) }}">
                                     {{ notification.content }}
                                 </a>
                                 {% endif %}
