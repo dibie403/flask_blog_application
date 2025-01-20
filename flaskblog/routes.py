@@ -1,8 +1,10 @@
 import secrets
 import os
+import tempfile
 import re
 import random
 from flask import jsonify
+from flask import send_file,abort
 from sqlalchemy import func
 from PIL import Image
 from flask import render_template,url_for, flash, redirect,request
@@ -124,21 +126,26 @@ def save_picture(form_picture):
     return picture_fn
 
 def save_picture1(form_picture):
+    # Generate a random filename
     random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)  # Correct method
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/post_image', picture_fn)
-    
+    _, f_ext = os.path.splitext(form_picture.filename)  # Get the file extension
+    picture_fn = random_hex + f_ext  # Generate a new filename with a random hex string and original extension
+
+    # Define the path where the image will be saved (static/post_images)
+    picture_path = os.path.join(app.root_path, 'static/post_images', picture_fn)
+
     # Ensure the directory exists
-    os.makedirs(os.path.join(app.root_path, 'static/post_image'), exist_ok=True)
-    
+    os.makedirs(os.path.join(app.root_path, 'static/post_images'), exist_ok=True)
+
     # Resize and save the picture
-    output_size = (250, 250)
+    output_size = (250, 250)  # Resize the image to a thumbnail size (adjust as needed)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
-    i.save(picture_path)
+    i.save(picture_path)  # Save the image to the path
 
+    # Return the filename (so you can store this in the database)
     return picture_fn
+
 
 
 @app.route("/Account/edit", methods=['POST', 'GET'])
@@ -176,7 +183,7 @@ def generate_slug(title):
 def new_post():
     form = CreatePostForm()
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    image = None  # Set image to None initially to avoid setting a default image
+    image = None  # Set image to None initially
     
     if form.validate_on_submit():
         # Handle invalid file types
@@ -188,8 +195,9 @@ def new_post():
         # Save the image if provided
         if form.picture.data:
             try:
-                picture_file = save_picture1(form.picture.data)  # Assuming this function saves the image
-                image = picture_file  # Update the image file name to the saved file
+                # Save image temporarily or upload to cloud storage
+                picture_file = save_picture1(form.picture.data)  # Saves image locally to static/post_images
+                image = picture_file  # Update image reference to the saved image
                 print(f"Image saved: {image}")  # Debug log
             except Exception as e:
                 print(f"Error saving image: {e}")
@@ -197,15 +205,15 @@ def new_post():
                 return redirect(url_for('new_post'))
         
         # Generate the slug based on the title
-        slug = generate_slug(form.title.data)  # Assuming you have the generate_slug function
+        slug = generate_slug(form.title.data)
         
-        # Create and add the new post, only add the image if it was uploaded
+        # Create and add the new post
         post = Post(
-            title=form.title.data.upper(), 
-            slug=slug,  # Include the slug in the post
-            content=form.Content.data, 
-            author=current_user, 
-            image=image  # If no image, 'image' will be None, and no default will be set
+            title=form.title.data.upper(),
+            slug=slug,
+            content=form.Content.data,
+            author=current_user,
+            image=image  # Save image file reference (path or cloud URL)
         )
         db.session.add(post)
         db.session.commit()
@@ -213,6 +221,18 @@ def new_post():
         return redirect(url_for('home'))
     
     return render_template('create_new.html', title='New Post', form=form, image_file=image_file)
+
+
+@app.route('/image/<filename>')
+def serve_image(filename):
+    # Path to the static folder where images are stored
+    image_path = os.path.join(app.root_path, 'static', 'post_images', filename)
+    
+    if os.path.exists(image_path):
+        return send_file(image_path)
+    else:
+        abort(404) 
+
 
        
        
