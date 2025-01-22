@@ -4,8 +4,8 @@
     <div class="content-section">
       <h2 class="text-secondary"><a>PROFILE</a></h2>
       <div class="media">
-        <a href="{{ url_for('show_img2',picture=picture) }}">
-          <img class="rounded-circle account-img" src="{{ picture }}" alt="Profile Picture">
+        <a href="{{ url_for('show_img2',picture=user.image_file) }}">
+          <img class="rounded-circle account-img" src="{{ user.image_file }}" alt="Profile Picture">
         </a>
 
         <div class="media-body">
@@ -35,7 +35,7 @@
       <div class="border-top pt-3">
         {% for post in posts.items %}
          <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ picture }}">
+          <img class="rounded-circle article-img" src="{{ user.image_file }}">
           <div class="media-body">
             <div class="article-metadata ">
                {% if  user.email =='dibieemmanuel403@gmail.com' %}

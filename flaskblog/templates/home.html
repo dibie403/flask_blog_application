@@ -26,17 +26,23 @@
         </h2>
 
         <div class="image-section11 d-flex flex-wrap align-items-center mb-3 ml-4" style="gap: 25px;">
-        {% for user in user %}
-        <div class="text-center" style="max-width: 80px;">
-            <a href="{{url_for('look',username=user.username)}}"><img class="rounded-circle border border-primary" 
-                 src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" 
-                 alt="{{ user.username }}" 
-                 width="60" height="60" ></a>
-            <a href="{{url_for('look',username=user.username)}}"><p class="mt-2 text-truncate" style="font-size: 0.9em; color: #428bca "title="{{ user.username }}">
-                {{ user.username[:7] }}
-            </p></a>
-        </div>
-    {% endfor %}
+       {% for user in user %}
+            <div class="text-center" style="max-width: 80px;">
+                <a href="{{ url_for('look', username=user.username) }}">
+                    <img class="rounded-circle border border-primary" 
+                         src="{{ user.image_file }}" 
+                         alt="{{ user.username }}" 
+                         width="60" height="60">
+                </a>
+                <a href="{{ url_for('look', username=user.username) }}">
+                    <p class="mt-2 text-truncate" style="font-size: 0.9em; color: #428bca" title="{{ user.username }}">
+                        {{ user.username[:7] }}
+                    </p>
+                </a>
+            </div>
+        {% endfor %}
+
+
 </div>
         <h2 class="text-primary">
             See What's Being Scribed 😯!
@@ -55,7 +61,7 @@
 
         <article class="media content-section p-3 mb-4 rounded shadow-sm bg-white">
             <img class="rounded-circle article-img mr-3" 
-                 src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" 
+                 src="{{ post.author.image_file }}" 
                  alt="{{ post.author.username }}" 
                  width="60" height="60">
             <div class="media-body">
@@ -154,6 +160,9 @@
           
         {% endfor %}
     </div>
+    {% if current_user.email == 'dibieemmanuel403@gmail.com' or current_user.is_admin %}
+      <a class="btn btn-info mb-4" href="{{url_for('admin_page')}}">Admin Page</a>
+    {% endif %}
   
 </div>
 {% endblock content %}

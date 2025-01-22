@@ -13,8 +13,26 @@ from flaskblog.forms import RegistrationForm,LoginForm,AccountUpdateForm,CreateP
 from flaskblog.models import User,Post,Comment,Reply,Love,Notification,Feedback
 from flask_login import login_user,current_user,logout_user,login_required
 from flask_mail import Message
+from dotenv import load_dotenv
+from io import BytesIO
 
+import firebase_admin
+from firebase_admin import credentials, storage
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Fetch the Firebase credentials path from the environment variable
+firebase_credentials_path = os.getenv("Firebase_Credentials")
+
+if firebase_credentials_path:
+    # Initialize Firebase Admin SDK
+    cred = credentials.Certificate(firebase_credentials_path)
+    firebase_admin.initialize_app(cred, {
+        'storageBucket': 'face-check-attendance.appspot.com'  # Your Firebase Storage bucket name
+    })
+else:
+    print("Firebase credentials path is missing.")
 
 
 @app.route("/")
@@ -102,6 +120,8 @@ from flask import request
 @login_required
 def Account():
     # Get the profile image file path
+    print(f"Image URL: {current_user.image_file}")
+
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     
     # Fetch the page number from the query parameters (default is 1)
@@ -112,7 +132,7 @@ def Account():
     
     return render_template('Account.html', title='Account', post=post, image_file=image_file)
 
-def save_picture(form_picture):
+def save_picture_for_local_profile_pix(form_picture):
     random_hex=secrets.token_hex(8)
     _,f_ext=os.path.split(form_picture.filename)
     picture_fn=random_hex +f_ext
@@ -125,7 +145,7 @@ def save_picture(form_picture):
 
     return picture_fn
 
-def save_picture1(form_picture):
+def save_picture_for_local_post_pix(form_picture):
     # Generate a random filename
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)  # Get the file extension
@@ -148,9 +168,125 @@ def save_picture1(form_picture):
 
 
 
+from firebase_admin import storage
+import os
+import secrets
+from PIL import Image
+from io import BytesIO
+
+def save_picture(form_picture):
+    # Generate a random filename
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+
+    # Open the image and resize to a thumbnail (optional)
+    output_size = (250, 250)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+
+    # If the image is in RGBA (transparency), we need to convert it to RGB for JPEG
+    if i.mode == 'RGBA':
+        # Convert RGBA to RGB
+        i = i.convert('RGB')
+
+    # Save the image to a BytesIO object
+    img_byte_arr = BytesIO()
+
+    # If it's a PNG, save it as PNG, otherwise save it as JPEG
+    if f_ext.lower() == '.png':
+        i.save(img_byte_arr, format='PNG')
+    else:
+        i.save(img_byte_arr, format='JPEG')
+
+    # Reset the stream to the beginning
+    img_byte_arr.seek(0)
+
+    # Upload the image to Firebase Storage
+    bucket = storage.bucket()  # This gets the default Firebase Storage bucket
+    blob = bucket.blob('profile_pix/' + picture_fn)  # Save the image under 'profile_pix' folder
+
+    # Upload the image from the BytesIO object
+    blob.upload_from_file(img_byte_arr, content_type=f'image/{f_ext[1:]}')
+
+    # Optionally, make the image public by adding metadata
+    blob.make_public()
+
+    # Return the public URL of the uploaded image
+    return blob.public_url
+
+
+def save_picture1(form_picture):
+    # Generate a random filename
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+
+    # Open the image and resize to a thumbnail (optional)
+    output_size = (250, 250)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+
+    # If the image is in RGBA (transparency), we need to convert it to RGB for JPEG
+    if i.mode == 'RGBA':
+        # Convert RGBA to RGB
+        i = i.convert('RGB')
+
+    # Save the image to a BytesIO object
+    img_byte_arr = BytesIO()
+
+    # If it's a PNG, save it as PNG, otherwise save it as JPEG
+    if f_ext.lower() == '.png':
+        i.save(img_byte_arr, format='PNG')
+    else:
+        i.save(img_byte_arr, format='JPEG')
+
+    # Reset the stream to the beginning
+    img_byte_arr.seek(0)
+
+    # Upload the image to Firebase Storage
+    bucket = storage.bucket()  # This gets the default Firebase Storage bucket
+    blob = bucket.blob('images/' + picture_fn)  # Save the image under 'images' folder
+
+    # Upload the image from the BytesIO object
+    blob.upload_from_file(img_byte_arr, content_type=f'image/{f_ext[1:]}')
+
+    # Optionally, make the image public by adding metadata
+    blob.make_public()
+
+    return blob.public_url  # This returns the public URL of the uploaded image
+
+
 @app.route("/Account/edit", methods=['POST', 'GET'])
 @login_required
 def edit():
+    # Set the default image URL
+    image_file = current_user.image_file  # This should hold the Firebase URL now
+
+    form = AccountUpdateForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            # Save the image to Firebase Storage and get the public URL
+            picture_file = save_picture(form.picture.data)  # Firebase URL returned here
+            current_user.image_file = picture_file  # Save the Firebase URL to the database
+
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.Biography = form.Biography.data
+        db.session.commit()
+        flash("Profile updated successfully", 'success')
+        return redirect(url_for('Account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.Biography.data = current_user.Biography
+
+    return render_template('edit.html', title='Edit', image_file=image_file, form=form)
+
+
+@app.route("/Account1/edit1", methods=['POST', 'GET'])
+@login_required
+def edit1():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     form = AccountUpdateForm()
     if form.validate_on_submit():
@@ -172,15 +308,17 @@ def edit():
 
 
 
+
+
 def generate_slug(title):
     slug = re.sub(r'[^a-zA-Z0-9]+', '-', title.lower()).strip('-')
     return slug
 
 
 
-@app.route("/Account/post/new", methods=['POST', 'GET'])
+@app.route("/Account/post1/new1", methods=['POST', 'GET'])
 @login_required
-def new_post():
+def new_post1():
     form = CreatePostForm()
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     image = None  # Set image to None initially
@@ -233,6 +371,49 @@ def serve_image(filename):
     else:
         abort(404) 
 
+@app.route("/Account/post/new", methods=['POST', 'GET'])
+@login_required
+def new_post():
+    form = CreatePostForm()
+    
+    # Remove the image_file for profile pictures if not needed here
+    image = None  # Set image to None initially
+
+    if form.validate_on_submit():
+        # Handle invalid file types
+        if form.picture.errors:
+            for error in form.picture.errors:
+                flash(f"File upload error: {error}", "danger")
+            return redirect(url_for('new_post'))
+
+        # Save the image if provided
+        if form.picture.data:
+            try:
+                # Save the image to Firebase Storage and get the public URL
+                image = save_picture1(form.picture.data)  # Now it returns the public URL
+                print(f"Image saved: {image}")  # Debug log
+            except Exception as e:
+                print(f"Error saving image: {e}")
+                flash("Error saving the image. Please try again.", 'danger')
+                return redirect(url_for('new_post'))
+
+        # Generate the slug based on the title
+        slug = generate_slug(form.title.data)
+
+        # Create and add the new post
+        post = Post(
+            title=form.title.data.upper(),
+            slug=slug,
+            content=form.Content.data,
+            author=current_user,
+            image=image  # Store the public URL of the image
+        )
+        db.session.add(post)
+        db.session.commit()
+        flash("Post created successfully!", "success")
+        return redirect(url_for('home'))
+
+    return render_template('create_new.html', title='New Post', form=form)
 
        
        
@@ -241,10 +422,10 @@ def serve_image(filename):
 @app.route("/show", methods=['POST', 'GET'])
 @login_required
 def show_img():
-    image_file= url_for('static', filename='profile_pics/' + current_user.image_file)
+    #image_file= url_for( current_user.image_file)
     #picture = url_for('static', filename='profile_pics/' + user.image_file)
 
-    return render_template('show_image.html',image_file=image_file)
+    return render_template('show_image.html')
 
 global picture
 @app.route("/home/search_person/<username>")
@@ -264,12 +445,12 @@ def look(username):
             name = user.username
             email = user.email
             print(user.id)
-            picture = url_for('static', filename='profile_pics/' + user.image_file)
-            image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-            print(picture)
+            #picture = url_for('static', filename='profile_pics/' + user.image_file)
+            #image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+            #print(picture)
             
 
-    return render_template('search_person.html', name=name, email=email, picture=picture, posts=posts, user=user,image_file=image_file)
+    return render_template('search_person.html', name=name, email=email, posts=posts, user=user)
 
 
 @app.route("/search_person/show2", methods=['POST', 'GET'])

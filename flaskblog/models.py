@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    image_file = db.Column(db.String(255), nullable=False, default='default.jpg')
+    image_file = db.Column(db.String(255), nullable=False, default='https://firebasestorage.googleapis.com/v0/b/face-check-attendance.appspot.com/o/profile_pix%2Fdefault.jpg?alt=media&token=e4bdbe08-92f1-4fc7-8e60-086e98e63a66')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
     is_admin = db.Column(db.Boolean, nullable=False,default=False)
