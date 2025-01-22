@@ -108,7 +108,7 @@
 
                 <!-- Post Content -->
                 <p class="article-content mt-2 text-justify text-secondary">
-                    {{ post.content[:150] }}...
+                    {{ post.content[:80] }}...
                     <a href="{{ url_for('post_detail', slug=post.slug) }}" 
                        class="text-primary font-italic">
                         Read More

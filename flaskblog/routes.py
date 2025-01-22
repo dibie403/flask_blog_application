@@ -16,23 +16,13 @@ from flask_mail import Message
 from dotenv import load_dotenv
 from io import BytesIO
 
-import firebase_admin
-from firebase_admin import credentials, storage
+
 
 # Load environment variables from .env file
-load_dotenv()
+#load_dotenv()
 
 # Fetch the Firebase credentials path from the environment variable
-firebase_credentials_path = os.getenv("Firebase_Credentials")
 
-if firebase_credentials_path:
-    # Initialize Firebase Admin SDK
-    cred = credentials.Certificate(firebase_credentials_path)
-    firebase_admin.initialize_app(cred, {
-        'storageBucket': 'face-check-attendance.appspot.com'  # Your Firebase Storage bucket name
-    })
-else:
-    print("Firebase credentials path is missing.")
 
 
 @app.route("/")
