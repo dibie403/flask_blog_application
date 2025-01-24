@@ -282,6 +282,7 @@ def edit1():
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
+
             current_user.image_file = picture_file
 
         current_user.username = form.username.data
@@ -383,8 +384,8 @@ def new_post():
                 image = save_picture1(form.picture.data)  # Now it returns the public URL
                 print(f"Image saved: {image}")  # Debug log
             except Exception as e:
-                print(f"Error saving image: {e}")
-                flash("Error saving the image. Please try again.", 'danger')
+                print(e)
+                flash(f"{e}", 'danger')
                 return redirect(url_for('new_post'))
 
         # Generate the slug based on the title
