@@ -15,6 +15,8 @@ from flask_login import login_user,current_user,logout_user,login_required
 from flask_mail import Message
 from dotenv import load_dotenv
 from io import BytesIO
+import mimetypes
+from firebase_admin import storage
 
 
 
@@ -207,44 +209,54 @@ def save_picture(form_picture):
 
 
 def save_picture1(form_picture):
-    # Generate a random filename
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
+    try:
+        # Generate a random filename
+        random_hex = secrets.token_hex(8)
+        _, f_ext = os.path.splitext(form_picture.filename)
+        picture_fn = random_hex + f_ext
 
-    # Open the image and resize to a thumbnail (optional)
-    output_size = (250, 250)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
+        # Open the image and resize to a thumbnail (optional)
+        output_size = (250, 250)
+        i = Image.open(form_picture)
+        i.thumbnail(output_size)
 
-    # If the image is in RGBA (transparency), we need to convert it to RGB for JPEG
-    if i.mode == 'RGBA':
-        # Convert RGBA to RGB
-        i = i.convert('RGB')
+        # If the image is in RGBA (transparency), convert to RGB for JPEG
+        if i.mode == 'RGBA':
+            i = i.convert('RGB')
 
-    # Save the image to a BytesIO object
-    img_byte_arr = BytesIO()
+        # Save the image to a BytesIO object
+        img_byte_arr = BytesIO()
 
-    # If it's a PNG, save it as PNG, otherwise save it as JPEG
-    if f_ext.lower() == '.png':
-        i.save(img_byte_arr, format='PNG')
-    else:
-        i.save(img_byte_arr, format='JPEG')
+        # Determine the correct MIME type
+        mime_type, _ = mimetypes.guess_type(form_picture.filename)
+        if mime_type is None:
+            mime_type = 'image/jpeg'  # Default fallback to JPEG
 
-    # Reset the stream to the beginning
-    img_byte_arr.seek(0)
+        # Save image in appropriate format
+        if f_ext.lower() == '.png':
+            i.save(img_byte_arr, format='PNG')
+        else:
+            i.save(img_byte_arr, format='JPEG')
 
-    # Upload the image to Firebase Storage
-    bucket = storage.bucket()  # This gets the default Firebase Storage bucket
-    blob = bucket.blob('images/' + picture_fn)  # Save the image under 'images' folder
+        # Reset the stream to the beginning
+        img_byte_arr.seek(0)
 
-    # Upload the image from the BytesIO object
-    blob.upload_from_file(img_byte_arr, content_type=f'image/{f_ext[1:]}')
+        # Upload the image to Firebase Storage
+        bucket = storage.bucket()  # This gets the default Firebase Storage bucket
+        blob = bucket.blob(f'images/{picture_fn}')  # Save the image under 'images' folder
 
-    # Optionally, make the image public by adding metadata
-    blob.make_public()
+        # Upload the image from the BytesIO object
+        blob.upload_from_file(img_byte_arr, content_type=mime_type)
 
-    return blob.public_url  # This returns the public URL of the uploaded image
+        # Optionally, make the image public by adding metadata
+        blob.make_public()
+
+        # Return the public URL of the uploaded image
+        return blob.public_url
+
+    except Exception as e:
+        print(f"Error in save_picture1: {e}")
+        raise ValueError("An error occurred while saving the picture.")
 
 
 @app.route("/Account/edit", methods=['POST', 'GET'])

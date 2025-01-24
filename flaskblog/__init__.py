@@ -1,7 +1,7 @@
 import os
-
+import json
 from flask import Flask
-from config import Config
+from config import Config, initialize_firebase
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
@@ -17,6 +17,9 @@ app = Flask(
 
 # Load configurations
 app.config.from_object(Config)
+
+# Initialize Firebase
+initialize_firebase()
 
 # Initialize extensions
 db = SQLAlchemy(app)
@@ -34,7 +37,6 @@ app.config['MAIL_USERNAME'] = os.environ.get("DB_USER")  # Email username from e
 app.config['MAIL_PASSWORD'] = os.environ.get("DBPASSWORD")  # Email password from env
 mail = Mail(app)
 
-
-
 # Import routes
 from flaskblog import routes
+

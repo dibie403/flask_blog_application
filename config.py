@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, storage
@@ -14,20 +15,20 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # Firebase setup
-    firebase_credentials_path = os.getenv("Firebase_Credentials")
 
-    if firebase_credentials_path:
-        try:
-            # Initialize Firebase Admin SDK
-            cred = credentials.Certificate(firebase_credentials_path)
+def initialize_firebase():
+    """Initializes Firebase only if it hasn't been initialized yet."""
+    if not firebase_admin._apps:  # Check if Firebase is already initialized
+        firebase_credentials = os.getenv("Firebase_Credentials")
+        if firebase_credentials:
+            cred = credentials.Certificate(json.loads(firebase_credentials))
             firebase_admin.initialize_app(cred, {
-                'storageBucket': 'face-check-attendance.appspot.com'  # Replace with your bucket name
+                'storageBucket': 'face-check-attendance.appspot.com'  # Replace with your actual bucket name
             })
-        except Exception as e:
-            print(f"Error initializing Firebase Admin SDK: {e}")
-    else:
-        print("Firebase credentials path is missing.")
+        else:
+            raise ValueError("FIREBASE_CREDENTIALS environment variable is not set.")
+
+
 
 
 		
