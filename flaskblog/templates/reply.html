@@ -5,7 +5,7 @@
     <div class="post-content-section p-4 bg-light rounded shadow-sm">
         <div class="d-flex justify-content-between align-items-center"> 
             <h6 class="mb-0 text-primary">
-                <img class="rounded-circle article-img2" src="{{url_for('static', filename='profile_pics/'+ comment.user.image_file)}}">
+                <img class="rounded-circle article-img2" src="{{ comment.user.image_file }}">
                 {% if comment.user.email=='dibieemmanuel403@gmail.com' %}
                 <a href="{{url_for('look', username=comment.user.username)}}">⭐{{ comment.user.username }}</a><sup style = "color: #428bca"> ||Founder🎟️||</sup>
                 {% elif comment.user.is_admin and comment.user.email!='dibieemmanuel403@gmail.com' %}
@@ -52,7 +52,7 @@
                     <!-- Reply Author Details -->
                     <h6 class="mb-0 text-primary">
                         <img class="rounded-circle article-img2" 
-                             src="{{ url_for('static', filename='profile_pics/' + reply.user.image_file) }}" 
+                             src="{{ reply.user.image_file }}" 
                              alt="User Image">
                         {% if reply.user.email=='dibieemmanuel403@gmail.com' %}
                          <a href="{{ url_for('look', username=reply.user.username) }}">⭐{{ reply.user.username }}</a><sup style = "color: #428bca"> ||Founder🎟️||</sup>

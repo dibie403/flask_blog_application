@@ -33,6 +33,16 @@
            {{ form.Content(class="form-control form-control-lg") }}
         {% endif %}
       </div>
+      <div class="form-group">
+          {{ form.picture.label() }}  <!-- Label should use form-control-label --> 
+          {{ form.picture(class="form-control-file") }} 
+          {% if form.picture.errors %}
+              {% for error in form.picture.errors %}
+                 <span class='text-danger'> {{ error }}</span><br>
+              {% endfor %}
+          {% endif %}
+      </div>
+
     </fieldset>
 
     <div class="form-group">
