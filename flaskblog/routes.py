@@ -797,12 +797,15 @@ def unlike_like_post(post_id):
 @app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin_page():
-    posts = Post.query.all()  # Fetch all posts
-    users = User.query.all()  # Fetch all users
-    comments=Comment.query.all()
-    if current_user.email != 'dibieemmanuel403@gmail.com':  # Ensure the user is an admin
-        flash("You are not authorized to access this page.", "danger")
-        return redirect(url_for('home'))  # Redirect unauthorized users to home
+    try:
+        posts = Post.query.all()  # Fetch all posts
+        users = User.query.all()  # Fetch all users
+        comments=Comment.query.all()
+        if current_user.email != 'dibieemmanuel403@gmail.com':  # Ensure the user is an admin
+            flash("You are not authorized to access this page.", "danger")
+            return redirect(url_for('home'))  # Redirect unauthorized users to home
+    except Exception as e:
+        flash(f'{e}', "danger")
 
     return render_template('admin.html', users=users, posts=posts,comments=comments)
 
