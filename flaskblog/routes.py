@@ -314,8 +314,10 @@ def edit1():
 
 
 def generate_slug(title):
+    from datetime import datetime
     slug = re.sub(r'[^a-zA-Z0-9]+', '-', title.lower()).strip('-')
-    return slug
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    return f"{slug}-{timestamp}"
 
 
 
