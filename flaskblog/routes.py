@@ -806,6 +806,7 @@ def admin_page():
             return redirect(url_for('home'))  # Redirect unauthorized users to home
     except Exception as e:
         flash(f'{e}', "danger")
+        return redirect(url_for('home'))
 
     return render_template('admin.html', users=users, posts=posts,comments=comments)
 
