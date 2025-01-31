@@ -1,35 +1,40 @@
 
 {% extends "layout.html" %}
 {% block content %}
-    <div class="content-section">
-      <h2 class="text-secondary"><a>PROFILE</a></h2>
-      <div class="media">
-        <a href="{{ url_for('show_img2',picture=user.image_file) }}">
-          <img class="rounded-circle account-img" src="{{ user.image_file }}" alt="Profile Picture">
-        </a>
+   <div class="content-section" style="padding: 10px; max-width: 100%; box-sizing: border-box;">
+  <h2 class="text-secondary"><a>PROFILE</a></h2>
+  <div class="media" style="display: flex; flex-wrap: wrap;">
+    <a href="{{ url_for('show_img2', picture=user.image_file) }}">
+      <img class="rounded-circle account-img" 
+           src="{{ user.image_file }}" 
+           alt="Profile Picture">
+    </a>
 
-        <div class="media-body">
-          {% if user.email =='dibieemmanuel403@gmail.com' %}
-           <h6 class="account-heading">⭐{{ user.username.upper() }}</h6><sub style = "color: #428bca">||Founder 🎟️||</sub>
-          {% elif user.is_admin and user.email !='dibieemmanuel403@gmail.com' %}
-           <h6 class="account-heading">{{ user.username.upper() }} </h6><sub style = "color: #428bca">||Admin ⭐||</sub>
-          {% else %}
-           <h6 class="account-heading">{{ user.username.upper() }}</h6>
-          {% endif %}
-          <p class="text-secondary">☯️{{ user.email }}</p>
-          <p class="text-secondary">offline 🐨</p>
-       <h4>Write a short biography about yourself'</h4> 
-       <div class="border-top pt-3">
+    <div class="media-body" style="flex: 1; word-wrap: break-word; overflow-wrap: break-word; max-width: 50%; text-align: left;">
+      {% if user.email == 'dibieemmanuel403@gmail.com' %}
+        <h6 class="account-heading" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">⭐{{ user.username.upper() }}</h6>
+        <sub style="color: #428bca; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">||Founder 🎟️||</sub>
+      {% elif user.is_admin and user.email != 'dibieemmanuel403@gmail.com' %}
+        <h6 class="account-heading" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ user.username.upper() }}</h6>
+        <sub style="color: #428bca; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">||Admin ⭐||</sub>
+      {% else %}
+        <h6 class="account-heading" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ user.username.upper() }}</h6>
+      {% endif %}
+      <p class="text-secondary" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #6c757d;">☯️{{ user.email }}</p>
+      <p class="text-secondary" style="color: #6c757d;">offline 🐨</p>
+      <h4>Write a short biography about yourself</h4> 
+      <div class="border-top pt-3" style="padding-top: 15px; border-top: 1px solid #ddd;">
         <small class="text-secondary">
-          <a class="ml-2" href="#">Connect</a>
+          <a class="ml-2" href="#" style="color: #6c757d; text-decoration: none;">Connect</a>
         </small>
         <small class="text-secondary">
-          <a class="ml-2" href="#">POP User</a>
+          <a class="ml-2" href="#" style="color: #6c757d; text-decoration: none;">POP User</a>
         </small>
-       </div>
-        </div>
-      </div>  
+      </div>
     </div>
+  </div>  
+</div>
+
     <div class="content-section">
       <h2 class="text-center  text-secondary"><a>Timeline</a></h2><br>
       <div class="border-top pt-3">
