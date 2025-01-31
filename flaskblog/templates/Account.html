@@ -1,36 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="content-section">
-      <h2 class="text-secondary"><a>My Profile</a></h2>
-      <div class="media">
-        <a href="{{ url_for('show_img',image_file=current_user.image_file) }}">
-        <img class="rounded-circle account-img" 
+    <div class="content-section" style="padding: 10px; max-width: 100%; box-sizing: border-box;">
+  <h2 class="text-secondary"><a>My Profile</a></h2>
+  <div class="media" style="display: flex; flex-wrap: wrap;">
+    <a href="{{ url_for('show_img') }}">
+      <img class="rounded-circle account-img" 
            src="{{ current_user.image_file }}" 
            alt="Profile Picture">
-        </a>
+    </a>
 
-        <div class="media-body">
-          {% if current_user.email=='dibieemmanuel403@gmail.com' %}
-           <h6 class="account-heading">⭐{{ current_user.username }}</h6><sub style = "color: #428bca">||Founder🎟️||</sub>
-           {% elif current_user.is_admin and current_user.username !='dibieemmanuel403' %}
-           <h6 class="account-heading">{{ current_user.username }}</h6><sub style = "color: #428bca">||Admin ⭐||</sub>
-           {% else %}
-           <h6 class="account-heading">{{ current_user.username }}</h6>
-           {% endif %}
-          <p class="text-secondary">☯️{{ current_user.email }}</p>
-          <p class="text-secondary">online 🦖</p>
-       <h4>{{current_user.Biography}}</h4> 
-       <div class="border-top pt-3">
+    <div class="media-body" style="flex: 1; word-wrap: break-word; overflow-wrap: break-word; max-width: 50%; text-align: left;">
+      {% if current_user.email=='dibieemmanuel403@gmail.com' %}
+        <h6 class="account-heading" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">⭐{{ current_user.username }}</h6>
+        <sub style="color: #428bca; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">||Founder🎟️||</sub>
+      {% elif current_user.is_admin and current_user.username != 'dibieemmanuel403' %}
+        <h6 class="account-heading" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ current_user.username }}</h6>
+        <sub style="color: #428bca; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">||Admin ⭐||</sub>
+      {% else %}
+        <h6 class="account-heading" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ current_user.username }}</h6>
+      {% endif %}
+      <p class="text-secondary" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #6c757d;">☯️{{ current_user.email }}</p>
+      <p class="text-secondary" style="color: #6c757d;">online 🟢</p>
+      <h4>{{ current_user.Biography }}</h4> 
+      <div class="border-top pt-3" style="padding-top: 15px; border-top: 1px solid #ddd;">
         <small class="text-secondary">
-          <a class="ml-2" href="{{ url_for('edit') }}">Edit profile</a>
+          <a class="ml-2" href="{{ url_for('edit') }}" style="color: #6c757d; text-decoration: none;">Edit profile</a>
         </small>
         <small class="text-secondary">
-          <a class="ml-2" href="{{ url_for('new_post') }}">Create Post</a>
+          <a class="ml-2" href="{{ url_for('new_post') }}" style="color: #6c757d; text-decoration: none;">Create Post</a>
         </small>
-       </div>
-        </div>
-      </div>  
+      </div>
     </div>
+  </div>  
+</div>
+
     <div class="content-section">
       <h2 class="text-center  text-secondary"><a>My Timeline</a></h2><br>
       <div class="border-top pt-3">
