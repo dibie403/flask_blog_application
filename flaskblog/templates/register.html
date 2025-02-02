@@ -11,10 +11,10 @@
 
           {% if form.username.errors %}
               {{ form.username(class="form-control form-control-lg is-invalid", 
-                                placeholder="Enter username without spaces", 
+                                placeholder="Username (max 20 chars, no spaces)", 
                                 maxlength="20", 
-                                pattern="^\S{1,10}$", 
-                                title="Username must be up to 10 characters without spaces") }}
+                                pattern="^\\S{1,20}$", 
+                                title="Username must be up to 20 characters without spaces") }}
               <div class="invalid-feedback">
                   {% for error in form.username.errors %}
                       <span>{{ error }}</span>
@@ -22,10 +22,10 @@
               </div>
           {% else %}
               {{ form.username(class="form-control form-control-lg", 
-                                placeholder="Enter username", 
-                                maxlength="10", 
-                                pattern="^\S{1,10}$", 
-                                title="Username must be up to 10 characters without spaces") }}
+                                placeholder="Username (max 20 chars, no spaces)", 
+                                maxlength="20", 
+                                pattern="^\\S{1,20}$", 
+                                title="Username must be up to 20 characters without spaces") }}
           {% endif %}
       </div>
 
