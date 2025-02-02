@@ -36,7 +36,7 @@ def home():
     user=User.query.all()
     add_admin()
 
-    limit = 8
+    limit = 9
     random_users = random.sample(user, min(len(user), limit))  # Randomly pick users, ensuring no more than `limit`
     image_file = None
     if current_user.is_authenticated:
