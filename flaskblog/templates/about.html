@@ -42,36 +42,54 @@
 
 				<!-- About Section -->
 				<section class="about-section text-center py-5">
-				    <div class="container">
-				        <h2 class="text-primary">Welcome to Our Company</h2>
-				        <p class="lead">We are a passionate team dedicated to providing the best services in the industry. Our mission is to create value and make a difference through our innovative approach. With a focus on excellence, we strive to exceed customer expectations and build lasting relationships.</p>
-				    </div>
-				</section>
+			    <div class="container">
+			        <h2 class="text-primary">Welcome to Our Blogging Space</h2>
+			        <p class="lead">
+			            Discover a world of ideas, stories, and inspiration. At <strong>Scribes🎯</strong>, we believe in the power of words to connect, inspire, and transform.  
+			            Whether you're here to share your thoughts, learn something new, or simply explore, our platform is built for curious minds and creative hearts.  
+			            Join our growing community, engage with diverse voices, and let your story be heard. Together, we write, we inspire, we grow.  
+			        </p>
+			    </div>
+			</section>
+
 
 				<!-- Team Section -->
 				<section class="team-section py-5 bg-light">
 				    <div class="container">
 				        <div class="row">
 				            <!-- Team Member 1 -->
-				            <div class="col-md-4 text-center">
-				                <img src="static/IMG-20240828-WA0213_1.jpg" alt="Dibie Noel" class="rounded-circle img-fluid mb-3" style="width: 150px;">
-				                <h6 class="text-primary">Dibie Noel</h6>
-				                  <small>CEO & Founder</small>
-				            </div>
+				           
 
 				            <!-- Team Member 2 -->
 				            <div class="col-md-4 text-center">
-				                <img src="https://via.placeholder.com/150" alt="Jane Smith" class="rounded-circle img-fluid mb-3" style="width: 150px;">
-				                <h6 class="text-primary">Jane Smith</h6>
-				                <small>Lead Developer</small>
-				            </div>
+										    <img src="{{ url_for('static', filename='profile_pics/default.jpg') }}" 
+										         alt="Jane Smith" 
+										         class="rounded-circle img-fluid mb-3" 
+										         style="width: 150px;">
+										    <h6 class="text-primary">Jane Smith</h6>
+										    <small>Co-Founder</small>
+										</div>
+
+										 <div class="col-md-4 text-center">
+										    <img src="static\IMG-20240828-WA0213_1.jpg"
+										         alt="Jane Smith" 
+										         class="rounded-circle img-fluid mb-3" 
+										         style="width: 150px;">
+										    <h6 class="text-primary">Noel Dibie</h6>
+										    <small>CE0 & Founder </small>
+										</div>
+
 
 				            <!-- Team Member 3 -->
 				            <div class="col-md-4 text-center">
-				                <img src="https://via.placeholder.com/150" alt="Mike Johnson" class="rounded-circle img-fluid mb-3" style="width: 150px;">
-				                <h6 class="text-primary">Mike Johnson</h6>
-				                <small>Product Manager</small>
-				            </div>
+									    <img src="{{ url_for('static', filename='profile_pics/default.jpg') }}" 
+									         alt="Jane Smith" 
+									         class="rounded-circle img-fluid mb-3" 
+									         style="width: 150px;">
+									    <h6 class="text-primary">Jane Smith</h6>
+									    <small>Co-Founder</small>
+									</div>
+
 				        </div>
 				    </div>
 				</section>
